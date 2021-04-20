@@ -305,7 +305,7 @@ MDScreen:
             pos_hint:{'center_x':0.5,'center_y':0.2}
             size_hint_x:0.5
             md_bg_color:1,0,0,1
-            on_release:app.myfirebase.sign_in(email_address.text,password.text)
+            on_release:app.sign_in(email_address.text,password.text)
         MDLabel:
             text:'Did you'
             pos_hint:{'center_x':0.672,'center_y':0.1}

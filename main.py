@@ -1,7 +1,12 @@
 from kivymd.app import MDApp
+from kivy.lang import Builder
+from kivy.uix.boxlayout import BoxLayout
+from kivymd.icon_definitions import md_icons
+from kivymd.uix.floatlayout import MDFloatLayout
 from kivymd.uix.label import MDLabel, MDIcon
 from kivymd.uix.screen import Screen
 from kivymd.uix.button import MDFlatButton, MDRectangleFlatButton, MDIconButton, MDFloatingActionButton
+from kivymd.uix.tab import MDTabsBase
 from kivymd.uix.textfield import MDTextField
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.list import MDList, ThreeLineListItem, ThreeLineAvatarListItem, OneLineListItem
@@ -14,10 +19,12 @@ from kivy.lang import Builder
 from kivy.uix.screenmanager import Screen, ScreenManager
 from helpers import username_helper, list_helper, screen_helper, navigation_helper, sign_up_helper, \
     screen_change_helper, log_in_helper, start_app_menu_helper
+from menu_screen import menu_screen_helper,ContentNavigationDrawer
 
 from kivy.core.window import Window
 import requests
 import json
+
 from myfirebase import MyFirebase
 
 Window.size = (300, 500)
@@ -28,10 +35,12 @@ class OSPApp(MDApp):
         self.screen_manager.current = name
 
     def build(self):
+        self.theme_cls.primary_palette = 'Red'
         self.myfirebase = MyFirebase()
         self.start_screen = Builder.load_string(start_app_menu_helper)
         self.sign_up_screen = Builder.load_string(sign_up_helper)
         self.log_in_screen = Builder.load_string(log_in_helper)
+        self.menu_screen = Builder.load_string(menu_screen_helper)
 
         self.screen_manager = ScreenManager()
         self.screen_manager.switch_to(self.start_screen)
@@ -169,6 +178,16 @@ class OSPApp(MDApp):
 
     def navigation_draw(self):
         print("Navigation")
+
+    def sign_in(self, email_address, password):
+        if self.myfirebase.sign_in(email_address, password):
+            self.screen_manager.switch_to(self.menu_screen)
+        else:
+            # dopisac obsługe złych danych
+            print("Incorrect data")
+
+    def nawigation_draw(self):
+        print("nawigation draw")
 
 
 if __name__ == '__main__':

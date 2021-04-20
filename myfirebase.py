@@ -37,3 +37,7 @@ class MyFirebase():
 
     def sign_in(self, email_address, password):
         print(email_address, password)
+        #zwarca true jesli dane prawdziwe
+        confirmed = True
+        return confirmed
+
