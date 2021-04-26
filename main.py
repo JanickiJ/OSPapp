@@ -1,31 +1,24 @@
-from kivymd.app import MDApp
-from kivy.lang import Builder
-from kivy.uix.boxlayout import BoxLayout
-from kivymd.icon_definitions import md_icons
-from kivymd.uix.floatlayout import MDFloatLayout
-from kivymd.uix.label import MDLabel, MDIcon
-from kivymd.uix.screen import Screen
-from kivymd.uix.button import MDFlatButton, MDRectangleFlatButton, MDIconButton, MDFloatingActionButton
-from kivymd.uix.tab import MDTabsBase
-from kivymd.uix.textfield import MDTextField
-from kivymd.uix.dialog import MDDialog
-from kivymd.uix.list import MDList, ThreeLineListItem, ThreeLineAvatarListItem, OneLineListItem
-from kivymd.uix.list import IconLeftWidget, ImageLeftWidget
-from kivymd.uix.datatables import MDDataTable
-from kivy.uix.scrollview import ScrollView
+from datetime import datetime
+
+import kivymd.uix.list
 from kivy.animation import Animation
-from kivy.metrics import dp
-from kivy.lang import Builder
-from kivy.uix.screenmanager import Screen, ScreenManager
-from helpers import username_helper, list_helper, screen_helper, navigation_helper, sign_up_helper, \
-    screen_change_helper, log_in_helper, start_app_menu_helper
-from menu_screen import menu_screen_helper,ContentNavigationDrawer
-
 from kivy.core.window import Window
-import requests
-import json
+from kivy.lang import Builder
+from kivy.properties import ListProperty
+from kivy.uix.screenmanager import ScreenManager
+from kivymd.app import MDApp
+from kivymd.uix.button import MDFlatButton, MDIconButton
+from kivymd.uix.dialog import MDDialog
+from kivymd.uix.picker import MDTimePicker, MDDatePicker
+from kivymd.uix.list import TwoLineAvatarIconListItem, IconLeftWidget, IconRightWidget, ThreeLineAvatarIconListItem, \
+    ThreeLineIconListItem, TwoLineAvatarListItem, OneLineIconListItem, TwoLineIconListItem, CheckboxRightWidget
+from kivymd.uix.selectioncontrol import MDCheckbox
+from kivymd.uix.list import IRightBodyTouch
+from OspApp.myfirebase import MyFirebase
+from helpers import sign_up_helper, \
+    log_in_helper, start_app_menu_helper
+from menu_screen import menu_screen_helper
 
-from myfirebase import MyFirebase
 
 Window.size = (300, 500)
 
@@ -41,9 +34,9 @@ class OSPApp(MDApp):
         self.sign_up_screen = Builder.load_string(sign_up_helper)
         self.log_in_screen = Builder.load_string(log_in_helper)
         self.menu_screen = Builder.load_string(menu_screen_helper)
-
         self.screen_manager = ScreenManager()
         self.screen_manager.switch_to(self.start_screen)
+
         # kv=Builder.load_string(sign_up_helper)
         return self.screen_manager
         # self.theme_cls.primary_palette = 'Red'
@@ -146,7 +139,7 @@ class OSPApp(MDApp):
         self.sign_up_screen.ids.contact.icon = 'numeric-2-circle'
 
     def show_data(self, obj):
-        if self.username.text is "":
+        if self.username.text == "":
             check_string = "Please enter a username"
         else:
             check_string = self.username.text + " does not exist"
@@ -182,6 +175,8 @@ class OSPApp(MDApp):
     def sign_in(self, email_address, password):
         if self.myfirebase.sign_in(email_address, password):
             self.screen_manager.switch_to(self.menu_screen)
+            self.make_third_screen()
+
         else:
             # dopisac obsługe złych danych
             print("Incorrect data")
@@ -189,6 +184,77 @@ class OSPApp(MDApp):
     def nawigation_draw(self):
         print("nawigation draw")
 
+#dopisane
+#obsługa kalendarza i zegara
+    def on_save_data_picker(self, value):
+        self.current_button_id.text = str(value)
+
+    def on_cancel_data_picker(self, instance, value):
+        print(instance, value)
+
+    def show_date_picker(self, id):
+        self.current_button_id = id
+        date_dialog = MDDatePicker(self.on_save_data_picker)
+        date_dialog.open()
+
+    def show_time_picker(self,id):
+        self.current_button_id = id
+        time_dialog = MDTimePicker()
+        time_dialog.set_time(datetime.now())
+        time_dialog.bind(time=self.on_save_time_picker)
+        time_dialog.open()
+
+    def on_save_time_picker(self, instance, value):
+        self.current_button_id.text = str(value)
+
+    def on_cancel_time_picker(self, instance, value):
+        print(instance, value)
+
+#tworzenie listy załogi na 3 screen
+    def make_third_screen(self):
+        for member in self.myfirebase.get_crew_members():
+            permissions = ""
+            if member[1]: permissions += "dow. akcji, "
+            if member[2]: permissions += "kierowca, "
+            if member[3]: permissions += "dow. sekcji"
+            to_add = ThreeLineIconListItem(text=member[0], secondary_text="Uprawnienia:", tertiary_text=permissions)
+            to_add.tertiary_font_style = 'Caption'
+            to_add.secondary_font_style = 'Caption'
+            to_add.add_widget(IconLeftWidget(icon='fire'))
+            self.menu_screen.ids.crew_members.add_widget(to_add)
+
+#tworzenie wyskakujacej listy załogi na 1 screen
+#nie działa on_action czyli jak sie kliknie chcebox to sie nic nie dzieje
+    def show_members_with_permission(self, permission):
+        items =[]
+        _touchable_widgets = ListProperty()
+        for member in self.myfirebase.get_members_with_permission(permission):
+            item = OneLineIconListItem(text=member)
+            check = CheckboxRightWidget()
+            check.active = False
+            check.on_active(self.on_active())
+            item.add_widget(check)
+            items.append(item)
+
+        self.dialog = MDDialog(
+            title="Wybierz załoge",
+            type="simple",
+            items=items,
+            buttons=[
+                MDFlatButton(
+                    text="CANCEL", text_color=self.theme_cls.primary_color
+                ),
+                MDFlatButton(
+                    text="ACCEPT", text_color=self.theme_cls.primary_color
+                ),
+            ],
+        )
+
+        self.dialog.size_hint = 1, None
+        self.dialog.open()
+
+    def on_active(self):
+        print("DUUDUD")
 
 if __name__ == '__main__':
     OSPApp().run()

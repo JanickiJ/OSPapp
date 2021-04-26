@@ -1,10 +1,45 @@
 import requests
 import json
 from kivy.app import App
+import pyrebase
+
+firebase_config = {
+    "apiKey": "AIzaSyBXy9e5TqivFGRW_PqlXbEXH2xORqUhOzE",
+    "authDomain": "ospapp-705a7.firebaseapp.com",
+    "databaseURL": "https://ospapp-705a7-default-rtdb.europe-west1.firebasedatabase.app",
+    "projectId": "ospapp-705a7",
+    "storageBucket": "ospapp-705a7.appspot.com",
+    "messagingSenderId": "382392178612",
+    "appId": "1:382392178612:web:0618ff5a3850db4cbcc4e1",
+    "measurementId": "G-2Q32QZVTKK"
+}
+
+report_fields = ["action_commander", "arrival_time", "departure_date", "departure_time", "details", "distance_to_event", "driver",
+                 "event_location", "finished_action_time", "is_completed", "no", "odometer", "perpetrator", "return_date",
+                 "return_time", "section", "section_commander", "type_of_event", "victim"]
 
 
 class MyFirebase():
-    wak = "AIzaSyBXy9e5TqivFGRW_PqlXbEXH2xORqUhOzE"
+
+    def __init__(self):
+        self.wak = firebase_config["apiKey"]
+        self.firebase = pyrebase.initialize_app(firebase_config)
+        self.db = self.firebase.database()
+        self.auth = self.firebase.auth()
+        self.localId = None
+        self.crew_members = None
+        self.account_data = None
+        self.reports = None
+
+    def authentication(self, email, password):
+        try:
+            self.localId = self.auth.sign_in_with_email_and_password(email, password)["localId"]
+            self.crew_members = self.db.child("Brigades").child(self.localId).child("crew_members").get().val()
+            self.account_data = self.db.child("Brigades").child(self.localId).child("account_data").get().val()
+            self.reports = self.db.child("Brigades").child(self.localId).child("reports").get().val()
+            print(self.reports)
+        except:
+            print("Invalid email or password")
 
     def sign_up(self, team_name, email_address, address, phone_number, password):
         app = App.get_running_app()
@@ -13,7 +48,7 @@ class MyFirebase():
                           "password": password, "returnSecureToken": True}
         sign_up_request = requests.post(signup_url, data=signup_payload)
         sign_up_data = json.loads(sign_up_request.content.decode())
-        if sign_up_request.ok == False:
+        if not sign_up_request.ok:
             error_message = sign_up_data["error"]['message']
             app.sign_up_screen.ids['message'].text = error_message
         if sign_up_request.ok:
@@ -35,9 +70,52 @@ class MyFirebase():
             print(post_request.ok)
             print(json.loads(post_request.content.decode()))
 
-    def sign_in(self, email_address, password):
-        print(email_address, password)
-        #zwarca true jesli dane prawdziwe
+    def sign_in(self, email, password):
+        print(email, password)
+        self.authentication("haslo@gmail.com", "123456")
         confirmed = True
         return confirmed
 
+    def get_name(self):
+        return self.account_data["name"]
+
+    def get_email(self):
+        return self.account_data["email"]
+
+    def get_address(self):
+        return self.account_data["address"]
+
+    def get_crew_members(self):
+        crew_member_list = []
+        for member, permissions in self.crew_members.items():
+            crew_member_list.append([member])
+            for permission in permissions.values():
+                if permission == 'True':
+                    crew_member_list[-1].append(True)
+        return crew_member_list
+
+#prawdopodobnie struktura do zmiany
+    def get_active_reports(self):
+        reports_list = []
+        for year, months in self.reports.items():
+            for month, days in months.items():
+                for day, report in days.items():
+                    if report[1]['is_completed'] != 'True':
+                        #WTF
+                        reports_list.append(('-'.join([year, month, day, report[0]]), report[1]))
+        print(reports_list)
+
+    def get_members_with_permission(self, permission):
+        if permission == 0: return [member[0] for member in self.get_crew_members()]
+        else: return [member[0] for member in self.get_crew_members() if member[permission]]
+
+#do napisania
+    def upgrade_report(self):
+        pass
+
+    def add_report(self, args):
+        pass
+#        data = {}
+#        for i, field in enumerate(report_fields):
+#            data[field] = args[i]
+#        print(data)

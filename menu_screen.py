@@ -1,7 +1,7 @@
+from kivy.lang import Builder
 from kivy.properties import StringProperty
 from kivy.uix.boxlayout import BoxLayout
-from kivymd.uix.list import OneLineIconListItem
-
+from kivymd.uix.list import OneLineIconListItem, TwoLineIconListItem, IconLeftWidget, TwoLineAvatarListItem
 
 menu_screen_helper = """
 Screen:
@@ -13,6 +13,7 @@ Screen:
                     MDToolbar:
                         title: "OSP CZCHÓW"
                         left_action_items: [["menu", lambda x: nav_drawer.toggle_nav_drawer()]]
+                        elevation: 20
                     MDTabs:
                         size_hint: (1, .1)
                         id: tabs
@@ -21,33 +22,243 @@ Screen:
                         Carousel:
                             id: carousel
                             MDFloatLayout:
-                                MDTextField:
-                                    id: team_name
-                                    hint_text: 'Ekran1'
-                                    size_hint_x:0.8
-                                    pos_hint: {'center_x':0.5,'center_y':0.48}
-                                    current_hint_text_color:0,0,0,1
-                                    color_mode:'custom'
-                                    line_color_focus:1,0,0,1
+                                id: add_report
+                                MDFloatingActionButton:
+                                    icon: "content-save"
+                                    md_bg_color: app.theme_cls.primary_color
+                                    pos_hint: {'center_x': .89, 'center_y': .09}
+                                    #do napisania
+                                    #on_release:app.myfirebase.add_report([])
+
+                            
+                                ScrollView:
+                                    MDList:
+                                        OneLineListItem:
+                                            IconLeftWidget:
+                                                icon: "clock-start"
+                                                pos_hint: {'center_x': .1, 'center_y': .5}
+                                            MDRaisedButton:
+                                                id: departure_time
+                                                text: "Czas wyjazdu"
+                                                pos_hint: {'center_x': .55, 'center_y': .5}
+                                                on_release: app.show_time_picker(departure_time)
+                                                size_hint: 0.5,None
+                                            MDIconButton:
+                                                icon: "trash-can-outline"
+                                                pos_hint: {'center_x': .9, 'center_y': .5}
+                                                on_release: departure_time.text = "Czas wyjazdu"
+
+
+                                        OneLineListItem:
+                                            IconLeftWidget:
+                                                icon: "calendar-arrow-right"
+                                                pos_hint: {'center_x': .1, 'center_y': .5}
+                                            MDRaisedButton:
+                                                id: departure_date
+                                                text: "Data wyjazdu"
+                                                pos_hint: {'center_x': .55, 'center_y': .5}
+                                                on_release: app.show_date_picker(departure_date)
+                                                size_hint: 0.5,None
+                                            MDIconButton:
+                                                icon: "trash-can-outline"
+                                                pos_hint: {'center_x': .9, 'center_y': .5}
+                                                on_release: departure_date.text = "Data wyjazdu"
+
+                                                
+                                        OneLineListItem:
+                                            IconLeftWidget:
+                                                icon: "clock-alert-outline"
+                                                pos_hint: {'center_x': .1, 'center_y': .5}
+                                            MDRaisedButton:
+                                                id: arrival_time
+                                                text: "Czas na miejscu"
+                                                pos_hint: {'center_x': .55, 'center_y': .5}
+                                                on_release: app.show_time_picker(arrival_time)
+                                                size_hint: 0.5,None
+                                            MDIconButton:
+                                                icon: "trash-can-outline"
+                                                pos_hint: {'center_x': .9, 'center_y': .5}
+                                                on_release: arrival_time.text = "Czas na miejscu"
+
+                                                
+                                        OneLineListItem:
+                                            IconLeftWidget:
+                                                icon: "map-marker"
+                                                pos_hint: {'center_x': .1, 'center_y': .5}
+                                            MDTextField:
+                                                id: event_location
+                                                hint_text: 'Miejsce zdarzenia'
+                                                size_hint_x:0.6
+                                                pos_hint: {'center_x':0.5,'center_y':0.5}
+                                            MDIconButton:
+                                                icon: "crosshairs-gps"
+                                                pos_hint: {'center_x': .9, 'center_y': .5}
+
+                                                
+                                        OneLineListItem:
+                                            IconLeftWidget:
+                                                icon: "fire"
+                                                pos_hint: {'center_x': .1, 'center_y': .5}
+                                            MDTextField:
+                                                id: type_of_event
+                                                hint_text: 'Rodzaj zdarzenia'
+                                                size_hint_x:0.6
+                                                pos_hint: {'center_x':0.5,'center_y':0.5} 
+                                                
+                                        OneLineListItem:
+                                            IconLeftWidget:
+                                                icon: "account-star-outline"
+                                                pos_hint: {'center_x': .1, 'center_y': .5}
+                                            MDTextField:
+                                                hint_text: 'Dowódca sekcji'
+                                                size_hint_x:0.6
+                                                pos_hint: {'center_x':0.5,'center_y':0.5}
+                                            MDIconButton:
+                                                icon: "format-list-bulleted"
+                                                pos_hint: {'center_x': .9, 'center_y': .5}
+                                                on_release: app.show_members_with_permission(3)
+                                                                                             
+                                        OneLineListItem:
+                                            IconLeftWidget:
+                                                icon: "account-cog-outline"
+                                                pos_hint: {'center_x': .1, 'center_y': .5}
+                                            MDTextField:
+                                                hint_text: 'Dowódca akcji'
+                                                size_hint_x:0.6
+                                                pos_hint: {'center_x':0.5,'center_y':0.5}
+                                            MDIconButton:
+                                                icon: "format-list-bulleted"
+                                                pos_hint: {'center_x': .9, 'center_y': .5}
+                                                on_release: app.show_members_with_permission(1)                                                  
+                                        OneLineListItem:
+                                            IconLeftWidget:
+                                                icon: "steering"
+                                                pos_hint: {'center_x': .1, 'center_y': .5}
+                                            MDTextField:
+                                                hint_text: 'Kierowca'
+                                                size_hint_x:0.6
+                                                pos_hint: {'center_x':0.5,'center_y':0.5}  
+                                            MDIconButton:
+                                                icon: "format-list-bulleted"
+                                                pos_hint: {'center_x': .9, 'center_y': .5}
+                                                on_release: app.show_members_with_permission(2)
+                                        OneLineListItem:
+                                            IconLeftWidget:
+                                                icon: "account-group-outline"
+                                                pos_hint: {'center_x': .1, 'center_y': .5}
+                                            MDTextField:
+                                                hint_text: 'Sekcja'
+                                                size_hint_x:0.6
+                                                pos_hint: {'center_x':0.5,'center_y':0.5}  
+                                            MDIconButton:
+                                                icon: "format-list-bulleted"
+                                                pos_hint: {'center_x': .9, 'center_y': .5}
+                                                on_release: app.show_members_with_permission(0)                                                
+                                                                                        
+                                        OneLineListItem:
+                                            IconLeftWidget:
+                                                icon: "account-alert-outline"
+                                                pos_hint: {'center_x': .1, 'center_y': .5}
+                                            MDTextField:
+                                                id: perpetrator
+                                                hint_text: 'Sprawca'
+                                                size_hint_x:0.6
+                                                pos_hint: {'center_x':0.5,'center_y':0.5}                                          
+                                        OneLineListItem:
+                                            IconLeftWidget:
+                                                icon: "human-handsup"
+                                                pos_hint: {'center_x': .1, 'center_y': .5}
+                                            MDTextField:
+                                                id: victim
+                                                hint_text: 'Poszkodowany'
+                                                size_hint_x:0.6
+                                                pos_hint: {'center_x':0.5,'center_y':0.5}                                          
+                                        OneLineListItem:
+                                            IconLeftWidget:
+                                                icon: "information-outline"
+                                                pos_hint: {'center_x': .1, 'center_y': .5}
+                                            MDTextField:
+                                                id: details
+                                                hint_text: 'Szczegóły zdarzenia'
+                                                size_hint_x:0.6
+                                                pos_hint: {'center_x':0.5,'center_y':0.5}  
+                                        OneLineListItem:
+                                            IconLeftWidget:
+                                                icon: "calendar-arrow-left"
+                                                pos_hint: {'center_x': .1, 'center_y': .5}
+                                            MDRaisedButton:
+                                                id: return_date
+                                                text: "Data powrotu"
+                                                pos_hint: {'center_x': .55, 'center_y': .5}
+                                                on_release: app.show_date_picker(return_date)
+                                                size_hint: 0.5,None
+                                            MDIconButton:
+                                                icon: "trash-can-outline"
+                                                pos_hint: {'center_x': .9, 'center_y': .5}
+                                                on_release: return_date.text = "Data powrotu"
+                                            
+                                        OneLineListItem:
+                                            IconLeftWidget:
+                                                icon: "clock-end"
+                                                pos_hint: {'center_x': .1, 'center_y': .5}
+                                            MDRaisedButton:
+                                                id: finished_action_time
+                                                text: "Godzina zakończenia"
+                                                pos_hint: {'center_x': .55, 'center_y': .5}
+                                                on_release: app.show_time_picker(finished_action_time)
+                                                size_hint: 0.5,None
+                                            MDIconButton:
+                                                icon: "trash-can-outline"
+                                                pos_hint: {'center_x': .9, 'center_y': .5}
+                                                on_release: finished_action_time.text = "Godzina zakończenia"
+                                        OneLineListItem:
+                                            IconLeftWidget:
+                                                icon: "clock-check-outline"
+                                                pos_hint: {'center_x': .1, 'center_y': .5}
+                                            MDRaisedButton:
+                                                id: return_time
+                                                text: "Godzina w remizie"
+                                                pos_hint: {'center_x': .55, 'center_y': .5}
+                                                on_release: app.show_time_picker(return_time)
+                                                size_hint: 0.5,None
+                                            MDIconButton:
+                                                icon: "trash-can-outline"
+                                                pos_hint: {'center_x': .9, 'center_y': .5}
+                                                on_release: return_time.text = "Godzina w remizie"
+                                                
+                                        OneLineListItem:
+                                            IconLeftWidget:
+                                                icon: "speedometer"
+                                                pos_hint: {'center_x': .1, 'center_y': .5}
+                                            MDTextField:
+                                                id: odometer
+                                                hint_text: 'Stan licznika'
+                                                size_hint_x:0.6
+                                                pos_hint: {'center_x':0.5,'center_y':0.5}    
+                                        OneLineListItem:
+                                            IconLeftWidget:
+                                                icon: "road"
+                                                pos_hint: {'center_x': .1, 'center_y': .5}
+                                            MDTextField:
+                                                id: distance_to_event
+                                                hint_text: 'Km. do miejsca zdarzenia'
+                                                size_hint_x:0.6
+                                                pos_hint: {'center_x':0.5,'center_y':0.5}       
+                                        OneLineListItem:
+                                                                                                                                
+                        
+                                            
                             MDFloatLayout:
-                                md_bg_color: app.theme_cls.primary_color
-                                MDTextField:
-                                    id: team_name
-                                    hint_text: 'Ekran2'
-                                    size_hint_x:0.8
-                                    pos_hint: {'center_x':0.5,'center_y':0.48}
-                                    current_hint_text_color:0,0,0,1
-                                    color_mode:'custom'
-                                    line_color_focus:1,0,0,1
+                                id: active_reports
+                                ScrollView:
+                                    MDList:
+                                        id: active_reports_list
+                                
                             MDFloatLayout:
-                                MDTextField:
-                                    id: team_name
-                                    hint_text: 'Ekran3'
-                                    size_hint_x:0.8
-                                    pos_hint: {'center_x':0.5,'center_y':0.48}
-                                    current_hint_text_color:0,0,0,1
-                                    color_mode:'custom'
-                                    line_color_focus:1,0,0,1
+                                ScrollView:
+                                    MDList:
+                                        id: crew_members
+
                                         
         MDNavigationDrawer:
             id: nav_drawer
@@ -79,6 +290,11 @@ Screen:
                     size_hint_y: None
                     font_style: "Caption"
                     height: self.texture_size[1]
+                MDLabel:
+                    text: "osp@gmail.com"
+                    size_hint_y: None
+                    font_style: "Caption"
+                    height: self.texture_size[1]
                 ScrollView:
                     MDList:
                         OneLineIconListItem:
@@ -105,6 +321,7 @@ Screen:
 
 class ContentNavigationDrawer(BoxLayout):
     pass
+
 
 class ItemDrawer(OneLineIconListItem):
     icon = StringProperty()
