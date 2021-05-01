@@ -283,7 +283,7 @@ class OSPApp(MDApp):
         self.dialog.open()
 
     def on_active(self):
-        print("DUUDUD")
+        print("DUUDD")
 
 
 if __name__ == '__main__':
