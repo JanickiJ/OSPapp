@@ -14,10 +14,12 @@ from kivymd.uix.list import TwoLineAvatarIconListItem, IconLeftWidget, IconRight
     ThreeLineIconListItem, TwoLineAvatarListItem, OneLineIconListItem, TwoLineIconListItem, CheckboxRightWidget
 from kivymd.uix.selectioncontrol import MDCheckbox
 from kivymd.uix.list import IRightBodyTouch
+
 from kivymd.uix.boxlayout import BoxLayout
 
 from kivymd.uix.textfield import MDTextField
-from OspApp.myfirebase import MyFirebase
+
+from myfirebase import MyFirebase
 from helpers import sign_up_helper, \
     log_in_helper, start_app_menu_helper
 from menu_screen import menu_screen_helper
