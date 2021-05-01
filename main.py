@@ -7,14 +7,16 @@ from kivy.lang import Builder
 from kivy.properties import ListProperty
 from kivy.uix.screenmanager import ScreenManager
 from kivymd.app import MDApp
+from kivymd.uix.floatlayout import MDFloatLayout
+from kivymd.uix.tab import MDTabsBase
 from kivymd.uix.button import MDFlatButton, MDIconButton
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.picker import MDTimePicker, MDDatePicker
-from kivymd.uix.list import TwoLineAvatarIconListItem, IconLeftWidget, IconRightWidget, ThreeLineAvatarIconListItem, \
-    ThreeLineIconListItem, TwoLineAvatarListItem, OneLineIconListItem, TwoLineIconListItem, CheckboxRightWidget
+from kivymd.uix.list import TwoLineAvatarIconListItem, IconLeftWidget, IconRightWidget, ThreeLineAvatarIconListItem,ThreeLineIconListItem,OneLineIconListItem,CheckboxLeftWidget
 from kivymd.uix.selectioncontrol import MDCheckbox
 from kivymd.uix.list import IRightBodyTouch
-
+from kivymd.icon_definitions import md_icons
+from kivy.properties import StringProperty
 from kivymd.uix.boxlayout import BoxLayout
 
 from kivymd.uix.textfield import MDTextField
@@ -28,10 +30,12 @@ Window.size = (300, 500)
 
 
 class OSPApp(MDApp):
+
     def change_screen(self, name):
         self.screen_manager.current = name
 
     def build(self):
+        self.chosen_members = []
         self.theme_cls.primary_palette = 'Red'
         self.myfirebase = MyFirebase()
         self.start_screen = Builder.load_string(start_app_menu_helper)
@@ -95,7 +99,8 @@ class OSPApp(MDApp):
         # table.bind(on_row_press=self.row_press)
         # screen = Builder.load_string(sign_up)
         # return screen
-
+    def gowno(self):
+           self.menu_screen.ids.tabs.add_widget(Tab1())
     def anim(self, widget):
         anim = Animation(pos_hint={'center_y': 1.16})
         anim.start(widget)
@@ -230,30 +235,33 @@ class OSPApp(MDApp):
     # tworzenie wyskakujacej listy załogi na 1 screen
     # nie działa on_action czyli jak sie kliknie chcebox to sie nic nie dzieje
     def show_members_with_permission(self, permission):
-        items = []
+        # nie ogarniete jak sie odznacza
+        self.items = []
         _touchable_widgets = ListProperty()
         for member in self.myfirebase.get_members_with_permission(permission):
             item = OneLineIconListItem(text=member)
-            check = CheckboxRightWidget()
-            check.active = False
-            check.on_active(self.on_active())
+            check = CheckboxLeftWidget()
+            if member in self.chosen_members:
+                check.active = True
+            else:
+                check.active = False
+            check.on_active(self.on_active(member))
             item.add_widget(check)
-            items.append(item)
+            self.items.append(item)
 
         self.dialog = MDDialog(
             title="Wybierz załoge",
             type="simple",
-            items=items,
+            items=self.items,
             buttons=[
                 MDFlatButton(
-                    text="CANCEL", text_color=self.theme_cls.primary_color
+                    text="CANCEL", text_color=self.theme_cls.primary_color,on_release=self.clear_members
                 ),
                 MDFlatButton(
-                    text="ACCEPT", text_color=self.theme_cls.primary_color
+                    text="ACCEPT", text_color=self.theme_cls.primary_color,on_release=self.close_dialog
                 ),
             ],
         )
-
         self.dialog.size_hint = 1, None
         self.dialog.open()
 
@@ -281,15 +289,14 @@ class OSPApp(MDApp):
         )
         self.dialog.size_hint = .9, .3
         self.dialog.open()
-
-    def on_active(self):
-        print("DUUDD")
-
-
-    def on_tab_switch(self, instance_tabs, instance_tab, instance_tab_label, tab_text):
-        count_icon = instance_tab.icon
-        print(f"Welcome to {count_icon}' tab'")
-
-
+    def on_active(self,member):
+        self.chosen_members.append(member)
+    def on_disabled(self,member):
+        self.chosen_members.remove(member)
+    def clear_members(self,obj):
+        self.chosen_members=[]
+        self.dialog.dismiss()
+class Tab1(MDFloatLayout, MDTabsBase):
+    pass
 if __name__ == '__main__':
     OSPApp().run()

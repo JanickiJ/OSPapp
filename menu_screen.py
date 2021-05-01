@@ -11,27 +11,36 @@ Screen:
                 BoxLayout:
                     orientation: 'vertical'
                     MDToolbar:
+                        size_hint:1,0.15
+                        pos_hint:{'center_x': .5, 'center_y': .075}
                         title: "OSP CZCHÓW"
                         left_action_items: [["menu", lambda x: nav_drawer.toggle_nav_drawer()]]
                         elevation: 20
-                    MDTabs:
-                        size_hint: (.1, .1)
-                        pos_hint: {'center_x': .01, 'center_y': .01}
-                        id: tabs
-                        on_tab_switch: app.on_tab_switch(*args)
+                    BoxLayout:
+                        id:tabox
+                        orientation:'vertical'
+                        size_hint:1,0.125
+                        pos_hint:{'center_x': .5, 'center_y': .225}
+                        MDTabs:
+                            id: tabs
+                            tab_display_mode: 'text'
+                            MDTabsBase:
+                                id: rap_tab
+                                name: 'raport'
+                                text: "Nowy raport"
+                            MDTabsBase:
+                                id: idc_tab
+                                name: 'idc'
+                                text: "Dupa" 
+                            MDTabsBase:
+                                id: mem_tab
+                                name: 'members'
+                                text: "Członkowie"
                     MDCard:
                         Carousel:
                             id: carousel
                             MDFloatLayout:
                                 id: add_report
-                                MDFloatingActionButton:
-                                    icon: "content-save"
-                                    md_bg_color: app.theme_cls.primary_color
-                                    pos_hint: {'center_x': .89, 'center_y': .09}
-                                    #do napisania
-                                    #on_release:app.myfirebase.add_report([])
-
-                            
                                 ScrollView:
                                     MDList:
                                         OneLineListItem:
@@ -247,9 +256,12 @@ Screen:
                                                 size_hint_x:0.6
                                                 pos_hint: {'center_x':0.5,'center_y':0.5}       
                                         OneLineListItem:
-                                                                                                                                
-                        
-                                            
+                                MDFloatingActionButton:
+                                    icon: "content-save"
+                                    md_bg_color: app.theme_cls.primary_color
+                                    pos_hint: {'center_x': .89, 'center_y': .09}
+                                    #do napisania
+                                    #on_release:app.myfirebase.add_report([])                                                                                                           
                             MDFloatLayout:
                                 id: active_reports
                                 ScrollView:
@@ -259,9 +271,7 @@ Screen:
                             MDFloatLayout:
                                 ScrollView:
                                     MDList:
-                                        id: crew_members
-
-                                        
+                                        id: crew_members                           
         MDNavigationDrawer:
             id: nav_drawer
             ContentNavigationDrawer:
@@ -307,12 +317,7 @@ Screen:
                             text: "Twórcy"
                             IconLeftWidget:
                                 icon: "creation"
-<Tab>
-    MDIconButton:
-        id: icon
-        icon: root.icon
-        user_font_size: "48sp"
-        pos_hint: {"center_x": .5, "center_y": .5}                                                                   
+                                                      
 """
 
 
