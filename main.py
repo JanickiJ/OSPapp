@@ -14,11 +14,15 @@ from kivymd.uix.list import TwoLineAvatarIconListItem, IconLeftWidget, IconRight
     ThreeLineIconListItem, TwoLineAvatarListItem, OneLineIconListItem, TwoLineIconListItem, CheckboxRightWidget
 from kivymd.uix.selectioncontrol import MDCheckbox
 from kivymd.uix.list import IRightBodyTouch
+
+from kivymd.uix.boxlayout import BoxLayout
+
+from kivymd.uix.textfield import MDTextField
+
 from myfirebase import MyFirebase
 from helpers import sign_up_helper, \
     log_in_helper, start_app_menu_helper
 from menu_screen import menu_screen_helper
-
 
 Window.size = (300, 500)
 
@@ -184,8 +188,8 @@ class OSPApp(MDApp):
     def nawigation_draw(self):
         print("nawigation draw")
 
-#dopisane
-#obsługa kalendarza i zegara
+    # dopisane
+    # obsługa kalendarza i zegara
     def on_save_data_picker(self, value):
         self.current_button_id.text = str(value)
 
@@ -197,7 +201,7 @@ class OSPApp(MDApp):
         date_dialog = MDDatePicker(self.on_save_data_picker)
         date_dialog.open()
 
-    def show_time_picker(self,id):
+    def show_time_picker(self, id):
         self.current_button_id = id
         time_dialog = MDTimePicker()
         time_dialog.set_time(datetime.now())
@@ -210,7 +214,7 @@ class OSPApp(MDApp):
     def on_cancel_time_picker(self, instance, value):
         print(instance, value)
 
-#tworzenie listy załogi na 3 screen
+    # tworzenie listy załogi na 3 screen
     def make_third_screen(self):
         for member in self.myfirebase.get_crew_members():
             permissions = ""
@@ -223,10 +227,10 @@ class OSPApp(MDApp):
             to_add.add_widget(IconLeftWidget(icon='fire'))
             self.menu_screen.ids.crew_members.add_widget(to_add)
 
-#tworzenie wyskakujacej listy załogi na 1 screen
-#nie działa on_action czyli jak sie kliknie chcebox to sie nic nie dzieje
+    # tworzenie wyskakujacej listy załogi na 1 screen
+    # nie działa on_action czyli jak sie kliknie chcebox to sie nic nie dzieje
     def show_members_with_permission(self, permission):
-        items =[]
+        items = []
         _touchable_widgets = ListProperty()
         for member in self.myfirebase.get_members_with_permission(permission):
             item = OneLineIconListItem(text=member)
@@ -253,8 +257,34 @@ class OSPApp(MDApp):
         self.dialog.size_hint = 1, None
         self.dialog.open()
 
+    def show_details_dialog(self):
+        _touchable_widgets = ListProperty()
+        box = BoxLayout()
+
+        items =[MDTextField(hint_text = "Szczegóły zdarzenia")]
+
+
+        box.add_widget(MDTextField(multiline = True, hint_text = "Szczegóły zdarzenia"))
+
+        self.dialog = MDDialog(
+            title="Szczegóły zdarzenia",
+            type="simple",
+            items = items,
+            buttons=[
+                MDFlatButton(
+                    text="ANULUJ", text_color=self.theme_cls.primary_color
+                ),
+                MDFlatButton(
+                    text="AKCEPTUJ", text_color=self.theme_cls.primary_color
+                ),
+            ],
+        )
+        self.dialog.size_hint = .9, .3
+        self.dialog.open()
+
     def on_active(self):
-        print("DUUDUD")
+        print("DUUDD")
+
 
     def on_tab_switch(self, instance_tabs, instance_tab, instance_tab_label, tab_text):
         count_icon = instance_tab.icon
