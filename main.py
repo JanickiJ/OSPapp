@@ -256,5 +256,10 @@ class OSPApp(MDApp):
     def on_active(self):
         print("DUUDUD")
 
+    def on_tab_switch(self, instance_tabs, instance_tab, instance_tab_label, tab_text):
+        count_icon = instance_tab.icon
+        print(f"Welcome to {count_icon}' tab'")
+
+
 if __name__ == '__main__':
     OSPApp().run()

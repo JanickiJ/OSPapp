@@ -15,7 +15,8 @@ Screen:
                         left_action_items: [["menu", lambda x: nav_drawer.toggle_nav_drawer()]]
                         elevation: 20
                     MDTabs:
-                        size_hint: (1, .1)
+                        size_hint: (.1, .1)
+                        pos_hint: {'center_x': .01, 'center_y': .01}
                         id: tabs
                         on_tab_switch: app.on_tab_switch(*args)
                     MDCard:
@@ -305,17 +306,12 @@ Screen:
                             text: "Twórcy"
                             IconLeftWidget:
                                 icon: "creation"
-  
-
-
-
 <Tab>
-
     MDIconButton:
         id: icon
         icon: root.icon
         user_font_size: "48sp"
-        pos_hint: {"center_x": .5, "center_y": .5}                                                                        
+        pos_hint: {"center_x": .5, "center_y": .5}                                                                   
 """
 
 
