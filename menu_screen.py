@@ -177,11 +177,12 @@ Screen:
                                             IconLeftWidget:
                                                 icon: "information-outline"
                                                 pos_hint: {'center_x': .1, 'center_y': .5}
-                                            MDTextField:
-                                                id: details
-                                                hint_text: 'Szczegóły zdarzenia'
-                                                size_hint_x:0.6
-                                                pos_hint: {'center_x':0.5,'center_y':0.5}  
+                                            MDRaisedButton:
+                                                id: departure_date
+                                                text: "Szczegóły zdarzenia"
+                                                pos_hint: {'center_x': .55, 'center_y': .5}
+                                                on_release: app.show_details_dialog()
+                                                size_hint: 0.5,None  
                                         OneLineListItem:
                                             IconLeftWidget:
                                                 icon: "calendar-arrow-left"
@@ -321,7 +322,6 @@ Screen:
 
 class ContentNavigationDrawer(BoxLayout):
     pass
-
 
 class ItemDrawer(OneLineIconListItem):
     icon = StringProperty()
