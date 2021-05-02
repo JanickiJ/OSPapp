@@ -244,10 +244,40 @@ class OSPApp(MDApp):
 
     def make_second_screen(self):
         self.menu_screen.ids.active_reports.clear_widgets()
-        for report in self.myfirebase.get_active_reports():
+        for i, report in enumerate(self.myfirebase.get_active_reports()):
             to_add = OneLineAvatarIconListItem(text=report)
-            to_add.add_widget(IconLeftWidget(icon='file'))
+            to_add.add_widget(IconLeftWidget(icon='file-edit', on_release=self.edit_report))
+            to_add.add_widget(MDIconButton(icon="trash-can-outline", pos_hint={'center_x': .85, 'center_y': .5},
+                                           on_release=self.remove_report_dialog))
             self.menu_screen.ids.active_reports.add_widget(to_add)
+
+    def remove_report_dialog(self, obj):
+        for list in self.menu_screen.ids.active_reports.children:
+            if list.children[0] == obj:
+                self.report = list.text
+
+        self.dialog = MDDialog(
+            text="Napewno chcesz usunąć raport?",
+            buttons=[
+                MDFlatButton(
+                    text="USUŃ", text_color=self.theme_cls.primary_color, on_release=self.remove_report
+                ),
+                MDFlatButton(
+                    text="ZACHOWAJ", text_color=self.theme_cls.primary_color, on_release=self.close_dialog
+                ),
+            ],
+        )
+
+        self.dialog.size_hint = 1, None
+        self.dialog.open()
+
+    def edit_report(self, obj):
+        pass
+
+    def remove_report(self, obj):
+        self.myfirebase.remove_report(self.report)
+        self.close_dialog(obj)
+        self.make_second_screen()
 
     def show_members_with_permission(self, id, permission):
         self.items = []

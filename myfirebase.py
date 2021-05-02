@@ -110,6 +110,9 @@ class MyFirebase():
     def upgrade_report(self):
         pass
 
+    def remove_report(self, id):
+        print(self.db.child("Brigades").child(self.localId).child("reports").child(id).remove())
+
     def add_report(self, attributes_list):
         data_fields = dict()
         for i, child in enumerate(attributes_list.children):
