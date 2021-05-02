@@ -18,7 +18,6 @@ from kivymd.uix.list import IRightBodyTouch
 from kivymd.icon_definitions import md_icons
 from kivy.properties import StringProperty
 from kivymd.uix.boxlayout import BoxLayout
-
 from kivymd.uix.textfield import MDTextField
 
 from myfirebase import MyFirebase
