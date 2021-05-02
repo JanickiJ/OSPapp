@@ -14,9 +14,10 @@ firebase_config = {
     "measurementId": "G-2Q32QZVTKK"
 }
 
-report_fields = ["action_commander", "arrival_time", "departure_date", "departure_time", "details", "distance_to_event", "driver",
-                 "event_location", "finished_action_time", "is_completed", "no", "odometer", "perpetrator", "return_date",
-                 "return_time", "section", "section_commander", "type_of_event", "victim"]
+report_fields = ["departure_time", "departure_date", "arrival_time", "event_location", "type_of_event",
+                 "section_commander", "action_commander", "driver", "section", "perpetrator",
+                 "victim", "details", "return_date", "finished_action_time", "return_time",
+                 "odometer", "distance_to_event"]
 
 
 class MyFirebase():
@@ -94,28 +95,37 @@ class MyFirebase():
                     crew_member_list[-1].append(True)
         return crew_member_list
 
-#prawdopodobnie struktura do zmiany
+    # prawdopodobnie struktura do zmiany
     def get_active_reports(self):
         reports_list = []
         for year, months in self.reports.items():
             for month, days in months.items():
                 for day, report in days.items():
                     if report[1]['is_completed'] != 'True':
-                        #WTF
+                        # WTF
                         reports_list.append(('-'.join([year, month, day, report[0]]), report[1]))
         print(reports_list)
 
     def get_members_with_permission(self, permission):
-        if permission == 0: return [member[0] for member in self.get_crew_members()]
-        else: return [member[0] for member in self.get_crew_members() if member[permission]]
+        if permission == 0:
+            return [member[0] for member in self.get_crew_members()]
+        else:
+            return [member[0] for member in self.get_crew_members() if member[permission]]
 
-#do napisania
+    # do napisania
     def upgrade_report(self):
         pass
 
-    def add_report(self, args):
-        pass
-#        data = {}
-#        for i, field in enumerate(report_fields):
-#            data[field] = args[i]
-#        print(data)
+    def add_report(self, attributes_list):
+        data_fields = dict()
+        for i, child in enumerate(attributes_list.children):
+            if child.ids == "event_details":
+                data_fields[report_fields[-i]] = child.text
+
+            else:
+                try:
+                    data_fields[report_fields[-i]] = child.children[1].text
+                except:
+                    continue
+
+        print(data_fields)

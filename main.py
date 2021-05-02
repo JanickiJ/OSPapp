@@ -231,10 +231,8 @@ class OSPApp(MDApp):
             to_add.add_widget(IconLeftWidget(icon='fire'))
             self.menu_screen.ids.crew_members.add_widget(to_add)
 
-    # tworzenie wyskakujacej listy załogi na 1 screen
-    # nie działa on_action czyli jak sie kliknie chcebox to sie nic nie dzieje
     def show_members_with_permission(self, permission):
-        # nie ogarniete jak sie odznacza
+        # nie ogarniete jak sie odznacza #ogarniete
         self.items = []
         _touchable_widgets = ListProperty()
         for member in self.myfirebase.get_members_with_permission(permission):
@@ -244,7 +242,6 @@ class OSPApp(MDApp):
                 check.active = True
             else:
                 check.active = False
-            check.on_active(self.on_active(member))
             item.add_widget(check)
             self.items.append(item)
 
@@ -254,47 +251,30 @@ class OSPApp(MDApp):
             items=self.items,
             buttons=[
                 MDFlatButton(
-                    text="CANCEL", text_color=self.theme_cls.primary_color,on_release=self.clear_members
+                    text="WYCZYŚĆ", text_color=self.theme_cls.primary_color,on_release=self.clear_members
                 ),
                 MDFlatButton(
-                    text="ACCEPT", text_color=self.theme_cls.primary_color,on_release=self.close_dialog
+                    text="ZAPISZ", text_color=self.theme_cls.primary_color,on_release=self.accept_members
                 ),
             ],
         )
         self.dialog.size_hint = 1, None
         self.dialog.open()
 
-    def show_details_dialog(self):
-        _touchable_widgets = ListProperty()
-        box = BoxLayout()
+    def accept_members(self,obj):
+        self.chosen_members.clear()
+        for widget in self.dialog.items:
+            if widget.children[0].children[0].active:
+                self.chosen_members.append(widget.text)
+        self.close_dialog(obj)
 
-        items =[MDTextField(hint_text = "Szczegóły zdarzenia")]
-
-
-        box.add_widget(MDTextField(multiline = True, hint_text = "Szczegóły zdarzenia"))
-
-        self.dialog = MDDialog(
-            title="Szczegóły zdarzenia",
-            type="simple",
-            items = items,
-            buttons=[
-                MDFlatButton(
-                    text="ANULUJ", text_color=self.theme_cls.primary_color
-                ),
-                MDFlatButton(
-                    text="AKCEPTUJ", text_color=self.theme_cls.primary_color
-                ),
-            ],
-        )
-        self.dialog.size_hint = .9, .3
-        self.dialog.open()
-    def on_active(self,member):
-        self.chosen_members.append(member)
-    def on_disabled(self,member):
-        self.chosen_members.remove(member)
     def clear_members(self,obj):
-        self.chosen_members=[]
+        for widget in self.dialog.items:
+            widget.children[0].children[0].active = False
+        self.chosen_members.clear()
         self.dialog.dismiss()
+
+
 class Tab1(MDFloatLayout, MDTabsBase):
     pass
 if __name__ == '__main__':
