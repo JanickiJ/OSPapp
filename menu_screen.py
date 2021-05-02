@@ -11,9 +11,10 @@ Screen:
                 BoxLayout:
                     orientation: 'vertical'
                     MDToolbar:
+                        id: toolbar_name
                         size_hint:1,0.15
                         pos_hint:{'center_x': .5, 'center_y': .075}
-                        title: "OSP CZCHÓW"
+                        title: "OSP"
                         left_action_items: [["menu", lambda x: nav_drawer.toggle_nav_drawer()]]
                         elevation: 20
                     BoxLayout:
@@ -49,7 +50,7 @@ Screen:
                                                 icon: "clock-start"
                                                 pos_hint: {'center_x': .1, 'center_y': .5}
                                             MDRaisedButton:
-                                                id: "departure_time"
+                                                id: departure_time
                                                 text: "Czas wyjazdu"
                                                 pos_hint: {'center_x': .55, 'center_y': .5}
                                                 on_release: app.show_time_picker(departure_time)
@@ -120,55 +121,68 @@ Screen:
                                             IconLeftWidget:
                                                 icon: "account-star-outline"
                                                 pos_hint: {'center_x': .1, 'center_y': .5}
-                                            MDTextField:
+                                            MDRaisedButton:
                                                 id: section_commander
-                                                hint_text: 'Dowódca sekcji'
-                                                size_hint_x:0.6
-                                                pos_hint: {'center_x':0.5,'center_y':0.5}
+                                                text: 'Dowódca sekcji'
+                                                pos_hint: {'center_x': .55, 'center_y': .5}
+                                                on_release: app.show_members_with_permission(section_commander,3)
+                                                size_hint: 0.5,None
                                             MDIconButton:
-                                                icon: "format-list-bulleted"
+                                                icon: "trash-can-outline"
                                                 pos_hint: {'center_x': .9, 'center_y': .5}
-                                                on_release: app.show_members_with_permission(3)
-                                                                                             
+                                                on_release: 
+                                                    section_commander.text = "Dowódca sekcji"
+                                                    app.chosen_members.clear()
+       
                                         OneLineListItem:
                                             IconLeftWidget:
                                                 icon: "account-cog-outline"
                                                 pos_hint: {'center_x': .1, 'center_y': .5}
-                                            MDTextField:
+                                            MDRaisedButton:
                                                 id: action_commander
-                                                hint_text: 'Dowódca akcji'
-                                                size_hint_x:0.6
-                                                pos_hint: {'center_x':0.5,'center_y':0.5}
+                                                text: 'Dowódca akcji'
+                                                pos_hint: {'center_x': .55, 'center_y': .5}
+                                                on_release: app.show_members_with_permission(action_commander,1)
+                                                size_hint: 0.5,None
                                             MDIconButton:
-                                                icon: "format-list-bulleted"
+                                                icon: "trash-can-outline"
                                                 pos_hint: {'center_x': .9, 'center_y': .5}
-                                                on_release: app.show_members_with_permission(1)                                                  
+                                                on_release: 
+                                                    action_commander.text = "Dowódca akcji"
+                                                    app.chosen_members.clear()                    
+                                                                           
                                         OneLineListItem:
                                             IconLeftWidget:
                                                 icon: "steering"
                                                 pos_hint: {'center_x': .1, 'center_y': .5}
-                                            MDTextField:
+                                            MDRaisedButton:
                                                 id: driver
-                                                hint_text: 'Kierowca'
-                                                size_hint_x:0.6
-                                                pos_hint: {'center_x':0.5,'center_y':0.5}  
+                                                text: 'Kierowca'
+                                                pos_hint: {'center_x': .55, 'center_y': .5}
+                                                on_release: app.show_members_with_permission(driver,2)
+                                                size_hint: 0.5,None
                                             MDIconButton:
-                                                icon: "format-list-bulleted"
+                                                icon: "trash-can-outline"
                                                 pos_hint: {'center_x': .9, 'center_y': .5}
-                                                on_release: app.show_members_with_permission(2)
+                                                on_release: 
+                                                    driver.text = "Kierowca"
+                                                    app.chosen_members.clear()                    
                                         OneLineListItem:
                                             IconLeftWidget:
                                                 icon: "account-group-outline"
                                                 pos_hint: {'center_x': .1, 'center_y': .5}
-                                            MDTextField:
+                                            MDRaisedButton:
                                                 id: section
-                                                hint_text: 'Sekcja'
-                                                size_hint_x:0.6
-                                                pos_hint: {'center_x':0.5,'center_y':0.5}  
+                                                text: 'Sekcja'
+                                                pos_hint: {'center_x': .55, 'center_y': .5}
+                                                on_release: app.show_members_with_permission(section,0)
+                                                size_hint: 0.5,None
                                             MDIconButton:
-                                                icon: "format-list-bulleted"
+                                                icon: "trash-can-outline"
                                                 pos_hint: {'center_x': .9, 'center_y': .5}
-                                                on_release: app.show_members_with_permission(0)                                                
+                                                on_release: 
+                                                    section.text = "Sekcja"
+                                                    app.chosen_members.clear()                                                 
                                                                                         
                                         OneLineListItem:
                                             MDTextField:
@@ -271,15 +285,20 @@ Screen:
                                     on_release:app.myfirebase.add_report(attributes_list)
                                                                                                                                                
                             MDFloatLayout:
-                                id: active_reports
                                 ScrollView:
                                     MDList:
-                                        id: active_reports_list
+                                        id: active_reports
+                                MDFloatingActionButton:
+                                    icon: "reload"
+                                    md_bg_color: app.theme_cls.primary_color
+                                    pos_hint: {'center_x': .89, 'center_y': .09}
+                                    on_release: app.make_second_screen()
                                 
                             MDFloatLayout:
                                 ScrollView:
                                     MDList:
                                         id: crew_members                           
+                            
         MDNavigationDrawer:
             id: nav_drawer
             ContentNavigationDrawer:
@@ -301,17 +320,18 @@ Screen:
                     
     
                 MDLabel:
-                    text: "Osp Czchów"
+                    id: navi_name
+                    text: "OSP"
                     font_style: "H5"
                     size_hint_y: None
                     height: self.texture_size[1]
                 MDLabel:
-                    text: "Krakowska 43"
+                    id: navi_address
                     size_hint_y: None
                     font_style: "Caption"
                     height: self.texture_size[1]
                 MDLabel:
-                    text: "osp@gmail.com"
+                    id: navi_email
                     size_hint_y: None
                     font_style: "Caption"
                     height: self.texture_size[1]

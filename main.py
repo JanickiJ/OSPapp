@@ -12,7 +12,8 @@ from kivymd.uix.tab import MDTabsBase
 from kivymd.uix.button import MDFlatButton, MDIconButton
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.picker import MDTimePicker, MDDatePicker
-from kivymd.uix.list import TwoLineAvatarIconListItem, IconLeftWidget, IconRightWidget, ThreeLineAvatarIconListItem,ThreeLineIconListItem,OneLineIconListItem,CheckboxLeftWidget
+from kivymd.uix.list import TwoLineAvatarIconListItem, IconLeftWidget, IconRightWidget, ThreeLineAvatarIconListItem, \
+    ThreeLineIconListItem, OneLineIconListItem, CheckboxLeftWidget, OneLineAvatarIconListItem, MDList
 from kivymd.uix.selectioncontrol import MDCheckbox
 from kivymd.uix.list import IRightBodyTouch
 from kivymd.icon_definitions import md_icons
@@ -99,8 +100,10 @@ class OSPApp(MDApp):
         # table.bind(on_row_press=self.row_press)
         # screen = Builder.load_string(sign_up)
         # return screen
+
     def gowno(self):
-           self.menu_screen.ids.tabs.add_widget(Tab1())
+        self.menu_screen.ids.tabs.add_widget(Tab1())
+
     def anim(self, widget):
         anim = Animation(pos_hint={'center_y': 1.16})
         anim.start(widget)
@@ -183,8 +186,11 @@ class OSPApp(MDApp):
 
     def sign_in(self, email_address, password):
         if self.myfirebase.sign_in(email_address, password):
-            self.screen_manager.switch_to(self.menu_screen)
+            self.make_first_screen()
             self.make_third_screen()
+            self.make_second_screen()
+
+            self.screen_manager.switch_to(self.menu_screen)
 
         else:
             # dopisac obsługe złych danych
@@ -219,7 +225,12 @@ class OSPApp(MDApp):
     def on_cancel_time_picker(self, instance, value):
         print(instance, value)
 
-    # tworzenie listy załogi na 3 screen
+    def make_first_screen(self):
+        self.menu_screen.ids.toolbar_name.title = self.myfirebase.get_name()
+        self.menu_screen.ids.navi_name.text = self.myfirebase.get_name()
+        self.menu_screen.ids.navi_address.text = self.myfirebase.get_address()
+        self.menu_screen.ids.navi_email.text = self.myfirebase.get_email()
+
     def make_third_screen(self):
         for member in self.myfirebase.get_crew_members():
             permissions = ""
@@ -232,9 +243,16 @@ class OSPApp(MDApp):
             to_add.add_widget(IconLeftWidget(icon='fire'))
             self.menu_screen.ids.crew_members.add_widget(to_add)
 
-    def show_members_with_permission(self, permission):
-        # nie ogarniete jak sie odznacza #ogarniete
+    def make_second_screen(self):
+        self.menu_screen.ids.active_reports.clear_widgets()
+        for report in self.myfirebase.get_active_reports():
+            to_add = OneLineAvatarIconListItem(text=report)
+            to_add.add_widget(IconLeftWidget(icon='file'))
+            self.menu_screen.ids.active_reports.add_widget(to_add)
+
+    def show_members_with_permission(self, id, permission):
         self.items = []
+        self.current_button_id = id
         _touchable_widgets = ListProperty()
         for member in self.myfirebase.get_members_with_permission(permission):
             item = OneLineIconListItem(text=member)
@@ -252,31 +270,36 @@ class OSPApp(MDApp):
             items=self.items,
             buttons=[
                 MDFlatButton(
-                    text="WYCZYŚĆ", text_color=self.theme_cls.primary_color,on_release=self.clear_members
+                    text="WYCZYŚĆ", text_color=self.theme_cls.primary_color, on_release=self.clear_members
                 ),
                 MDFlatButton(
-                    text="ZAPISZ", text_color=self.theme_cls.primary_color,on_release=self.accept_members
+                    text="ZAPISZ", text_color=self.theme_cls.primary_color, on_release=self.accept_members
                 ),
             ],
         )
         self.dialog.size_hint = 1, None
         self.dialog.open()
 
-    def accept_members(self,obj):
+    def accept_members(self, obj):
         self.chosen_members.clear()
         for widget in self.dialog.items:
             if widget.children[0].children[0].active:
                 self.chosen_members.append(widget.text)
+        try:
+            self.current_button_id.text = ",".join(self.chosen_members)
+        except:
+            pass
         self.close_dialog(obj)
 
-    def clear_members(self,obj):
+    def clear_members(self, obj):
         for widget in self.dialog.items:
             widget.children[0].children[0].active = False
         self.chosen_members.clear()
-        self.dialog.dismiss()
 
 
 class Tab1(MDFloatLayout, MDTabsBase):
     pass
+
+
 if __name__ == '__main__':
     OSPApp().run()

@@ -1,3 +1,5 @@
+import datetime
+
 import requests
 import json
 from kivy.app import App
@@ -86,6 +88,9 @@ class MyFirebase():
     def get_address(self):
         return self.account_data["address"]
 
+    def get_active_reports(self):
+        return self.db.child("Brigades").child(self.localId).child("reports").get().val().keys()
+
     def get_crew_members(self):
         crew_member_list = []
         for member, permissions in self.crew_members.items():
@@ -94,17 +99,6 @@ class MyFirebase():
                 if permission == 'True':
                     crew_member_list[-1].append(True)
         return crew_member_list
-
-    # prawdopodobnie struktura do zmiany
-    def get_active_reports(self):
-        reports_list = []
-        for year, months in self.reports.items():
-            for month, days in months.items():
-                for day, report in days.items():
-                    if report[1]['is_completed'] != 'True':
-                        # WTF
-                        reports_list.append(('-'.join([year, month, day, report[0]]), report[1]))
-        print(reports_list)
 
     def get_members_with_permission(self, permission):
         if permission == 0:
@@ -119,13 +113,15 @@ class MyFirebase():
     def add_report(self, attributes_list):
         data_fields = dict()
         for i, child in enumerate(attributes_list.children):
-            if child.ids == "event_details":
-                data_fields[report_fields[-i]] = child.text
-
+            field_name = report_fields[-i]
+            if field_name == "event_details":
+                data_fields[field_name] = child.text
+            elif field_name == "section":
+                data_fields[field_name] = child.children[1].text.split(",")
             else:
                 try:
-                    data_fields[report_fields[-i]] = child.children[1].text
+                    data_fields[field_name] = child.children[1].text
                 except:
                     continue
-
-        print(data_fields)
+        report_id = datetime.datetime.now().strftime('%Y-%m-%d_%H:%M')
+        self.db.child("Brigades").child(self.localId).child("reports").child(report_id).set(data_fields)
