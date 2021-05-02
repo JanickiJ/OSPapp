@@ -3,7 +3,7 @@ from kivy.properties import StringProperty
 from kivy.uix.boxlayout import BoxLayout
 from kivymd.uix.list import OneLineIconListItem, TwoLineIconListItem, IconLeftWidget, TwoLineAvatarListItem
 
-menu_screen_helper = """
+update_report_screen_helper = """
 Screen:
     MDNavigationLayout:
         ScreenManager:
@@ -14,29 +14,10 @@ Screen:
                         id: toolbar_name
                         size_hint:1,0.15
                         pos_hint:{'center_x': .5, 'center_y': .075}
-                        title: "OSP"
-                        left_action_items: [["menu", lambda x: nav_drawer.toggle_nav_drawer()]]
+                        title: app.report
+                        left_action_items: [["backburger", lambda x: app.change_to_second_menu()]]
                         elevation: 20
-                    BoxLayout:
-                        id:tabox
-                        orientation:'vertical'
-                        size_hint:1,0.125
-                        pos_hint:{'center_x': .5, 'center_y': .225}
-                        MDTabs:
-                            id: tabs
-                            tab_display_mode: 'text'
-                            MDTabsBase:
-                                id: rap_tab
-                                name: 'raport'
-                                text: "Nowy raport"
-                            MDTabsBase:
-                                id: idc_tab
-                                name: 'idc'
-                                text: "Dupa" 
-                            MDTabsBase:
-                                id: mem_tab
-                                name: 'members'
-                                text: "Członkowie"
+
                     MDCard:
                         Carousel:
                             id: carousel
@@ -76,7 +57,7 @@ Screen:
                                                 pos_hint: {'center_x': .9, 'center_y': .5}
                                                 on_release: departure_date.text = "Data wyjazdu"
 
-                                                
+
                                         OneLineListItem:
                                             IconLeftWidget:
                                                 icon: "clock-alert-outline"
@@ -92,7 +73,7 @@ Screen:
                                                 pos_hint: {'center_x': .9, 'center_y': .5}
                                                 on_release: arrival_time.text = "Czas na miejscu"
 
-                                                
+
                                         OneLineListItem:
                                             IconLeftWidget:
                                                 icon: "map-marker"
@@ -106,7 +87,7 @@ Screen:
                                                 icon: "crosshairs-gps"
                                                 pos_hint: {'center_x': .9, 'center_y': .5}
 
-                                                
+
                                         OneLineListItem:
                                             MDTextField:
                                                 id: type_of_event
@@ -116,7 +97,7 @@ Screen:
                                             IconLeftWidget:
                                                 icon: "fire"
                                                 pos_hint: {'center_x': .1, 'center_y': .5}
-                                                
+
                                         OneLineListItem:
                                             IconLeftWidget:
                                                 icon: "account-star-outline"
@@ -133,7 +114,7 @@ Screen:
                                                 on_release: 
                                                     section_commander.text = "Dowódca sekcji"
                                                     app.chosen_members.clear()
-       
+
                                         OneLineListItem:
                                             IconLeftWidget:
                                                 icon: "account-cog-outline"
@@ -150,7 +131,7 @@ Screen:
                                                 on_release: 
                                                     action_commander.text = "Dowódca akcji"
                                                     app.chosen_members.clear()                    
-                                                                           
+
                                         OneLineListItem:
                                             IconLeftWidget:
                                                 icon: "steering"
@@ -183,7 +164,7 @@ Screen:
                                                 on_release: 
                                                     section.text = "Sekcja"
                                                     app.chosen_members.clear()                                                 
-                                                                                        
+
                                         OneLineListItem:
                                             MDTextField:
                                                 id: perpetrator
@@ -194,7 +175,7 @@ Screen:
                                                 icon: "account-alert-outline"
                                                 pos_hint: {'center_x': .1, 'center_y': .5}
 
-                                                                                 
+
                                         OneLineListItem:
                                             MDTextField:
                                                 id: victim
@@ -204,13 +185,13 @@ Screen:
                                             IconLeftWidget:
                                                 icon: "human-handsup"
                                                 pos_hint: {'center_x': .1, 'center_y': .5}
-                                        
+
                                         MDTextFieldRect:
                                             id: details
                                             multiline: True
                                             hint_text: "Szczegóły zdarzenia"
                                             size_hint: 1, None                              
-                                       
+
                                         OneLineListItem:
                                             IconLeftWidget:
                                                 icon: "calendar-arrow-left"
@@ -225,7 +206,7 @@ Screen:
                                                 icon: "trash-can-outline"
                                                 pos_hint: {'center_x': .9, 'center_y': .5}
                                                 on_release: return_date.text = "Data powrotu"
-                                            
+
                                         OneLineListItem:
                                             IconLeftWidget:
                                                 icon: "clock-end"
@@ -240,7 +221,7 @@ Screen:
                                                 icon: "trash-can-outline"
                                                 pos_hint: {'center_x': .9, 'center_y': .5}
                                                 on_release: finished_action_time.text = "Godzina zakończenia"
-                                        
+
                                         OneLineListItem:
                                             IconLeftWidget:
                                                 icon: "clock-check-outline"
@@ -255,7 +236,7 @@ Screen:
                                                 icon: "trash-can-outline"
                                                 pos_hint: {'center_x': .9, 'center_y': .5}
                                                 on_release: return_time.text = "Godzina w remizie"
-                                                
+
                                         OneLineListItem:
                                             MDTextField:
                                                 id: odometer
@@ -265,7 +246,7 @@ Screen:
                                             IconLeftWidget:
                                                 icon: "speedometer"
                                                 pos_hint: {'center_x': .1, 'center_y': .5}
-   
+
                                         OneLineListItem:
                                             MDTextField:
                                                 id: distance_to_event
@@ -275,83 +256,23 @@ Screen:
                                             IconLeftWidget:
                                                 icon: "road"
                                                 pos_hint: {'center_x': .1, 'center_y': .5}
-                                                
+
                                         OneLineListItem:
-                                        
+
                                 MDFloatingActionButton:
                                     icon: "content-save"
                                     md_bg_color: app.theme_cls.primary_color
                                     pos_hint: {'center_x': .89, 'center_y': .09}
                                     on_release:
-                                        app.myfirebase.add_report(attributes_list)
-                                        app.show_snackbar("Dodano nowy raport")                                                                                                       
-                            MDFloatLayout:
-                                ScrollView:
-                                    MDList:
-                                        id: active_reports
-                                MDFloatingActionButton:
-                                    icon: "reload"
-                                    md_bg_color: app.theme_cls.primary_color
-                                    pos_hint: {'center_x': .89, 'center_y': .09}
-                                    on_release: app.make_second_screen()
-                                
-                            MDFloatLayout:
-                                ScrollView:
-                                    MDList:
-                                        id: crew_members                           
-                            
-        MDNavigationDrawer:
-            id: nav_drawer
-            ContentNavigationDrawer:
-                orientation: 'vertical'
-                padding: "8dp"
-                spacing: "8dp"
-                
-                AnchorLayout:
-                    anchor_x: "left"
-                    size_hint_y: None
-                    height: navigator_icon.height
-            
-                    MDIcon:
-                        id: navigator_icon
-                        icon: "fire"
-                        font_size: "72sp"                        
-                        theme_text_color: "Error"
-                        halign: "center"
-                    
-    
-                MDLabel:
-                    id: navi_name
-                    text: "OSP"
-                    font_style: "H5"
-                    size_hint_y: None
-                    height: self.texture_size[1]
-                MDLabel:
-                    id: navi_address
-                    size_hint_y: None
-                    font_style: "Caption"
-                    height: self.texture_size[1]
-                MDLabel:
-                    id: navi_email
-                    size_hint_y: None
-                    font_style: "Caption"
-                    height: self.texture_size[1]
-                ScrollView:
-                    MDList:
-                        OneLineIconListItem:
-                            text: "Wyloguj"
-                            IconLeftWidget:
-                                icon: "logout"
-                        OneLineIconListItem:
-                            text: "Twórcy"
-                            IconLeftWidget:
-                                icon: "creation"
-                                                      
+                                        app.myfirebase.update_report(attributes_list,app.report)
+                                        app.show_snackbar("Zaktualizowano raport")    
+
 """
 
 
 class ContentNavigationDrawer(BoxLayout):
     pass
+
 
 class ItemDrawer(OneLineIconListItem):
     icon = StringProperty()

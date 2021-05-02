@@ -7,7 +7,9 @@ from kivy.lang import Builder
 from kivy.properties import ListProperty
 from kivy.uix.screenmanager import ScreenManager
 from kivymd.app import MDApp
+from kivymd.material_resources import dp
 from kivymd.uix.floatlayout import MDFloatLayout
+from kivymd.uix.snackbar import Snackbar
 from kivymd.uix.tab import MDTabsBase
 from kivymd.uix.button import MDFlatButton, MDIconButton
 from kivymd.uix.dialog import MDDialog
@@ -25,6 +27,7 @@ from myfirebase import MyFirebase
 from helpers import sign_up_helper, \
     log_in_helper, start_app_menu_helper
 from menu_screen import menu_screen_helper
+from update_report_screen import update_report_screen_helper
 
 Window.size = (300, 500)
 
@@ -167,13 +170,12 @@ class OSPApp(MDApp):
     def change_to_login(self):
         self.screen_manager.switch_to(self.log_in_screen)
 
+    def change_to_second_menu(self):
+        self.screen_manager.switch_to(self.menu_screen)
+
     def change_to_signup(self):
         self.screen_manager.switch_to(self.sign_up_screen)
 
-    # def on_start(self):
-    # for i in range(20):
-    # items=OneLineListItem(text='Item '+str(i))
-    # self.root.ids.container.add_widget(items)
     def check_press(self, instance_table, current_row):
         print(instance_table, current_row)
 
@@ -198,8 +200,6 @@ class OSPApp(MDApp):
     def nawigation_draw(self):
         print("nawigation draw")
 
-    # dopisane
-    # obsługa kalendarza i zegara
     def on_save_data_picker(self, value):
         self.current_button_id.text = str(value)
 
@@ -230,6 +230,15 @@ class OSPApp(MDApp):
         self.menu_screen.ids.navi_address.text = self.myfirebase.get_address()
         self.menu_screen.ids.navi_email.text = self.myfirebase.get_email()
 
+    def make_second_screen(self):
+        self.menu_screen.ids.active_reports.clear_widgets()
+        for i, report in enumerate(self.myfirebase.get_active_reports()):
+            to_add = OneLineAvatarIconListItem(text=report)
+            to_add.add_widget(IconLeftWidget(icon='file-edit', on_release=self.edit_report))
+            to_add.add_widget(MDIconButton(icon="trash-can-outline", pos_hint={'center_x': .85, 'center_y': .5},
+                                           on_release=self.remove_report_dialog))
+            self.menu_screen.ids.active_reports.add_widget(to_add)
+
     def make_third_screen(self):
         for member in self.myfirebase.get_crew_members():
             permissions = ""
@@ -241,15 +250,6 @@ class OSPApp(MDApp):
             to_add.secondary_font_style = 'Caption'
             to_add.add_widget(IconLeftWidget(icon='fire'))
             self.menu_screen.ids.crew_members.add_widget(to_add)
-
-    def make_second_screen(self):
-        self.menu_screen.ids.active_reports.clear_widgets()
-        for i, report in enumerate(self.myfirebase.get_active_reports()):
-            to_add = OneLineAvatarIconListItem(text=report)
-            to_add.add_widget(IconLeftWidget(icon='file-edit', on_release=self.edit_report))
-            to_add.add_widget(MDIconButton(icon="trash-can-outline", pos_hint={'center_x': .85, 'center_y': .5},
-                                           on_release=self.remove_report_dialog))
-            self.menu_screen.ids.active_reports.add_widget(to_add)
 
     def remove_report_dialog(self, obj):
         for list in self.menu_screen.ids.active_reports.children:
@@ -272,7 +272,12 @@ class OSPApp(MDApp):
         self.dialog.open()
 
     def edit_report(self, obj):
-        pass
+        for list in self.menu_screen.ids.active_reports.children:
+            if list.children[2].children[0] == obj:
+                self.report = list.text
+        update_report_screen = Builder.load_string(update_report_screen_helper)
+        self.myfirebase.show_report(update_report_screen.ids.attributes_list, self.report)
+        self.screen_manager.switch_to(update_report_screen)
 
     def remove_report(self, obj):
         self.myfirebase.remove_report(self.report)
@@ -324,6 +329,16 @@ class OSPApp(MDApp):
         for widget in self.dialog.items:
             widget.children[0].children[0].active = False
         self.chosen_members.clear()
+
+    def show_snackbar(self, text):
+        Snackbar(
+            text=text,
+            snackbar_x="10dp",
+            snackbar_y="10dp",
+            size_hint_x=(
+                                Window.width - (dp(10) * 2)
+                        ) / Window.width
+        ).open()
 
 
 class Tab1(MDFloatLayout, MDTabsBase):

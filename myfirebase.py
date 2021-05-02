@@ -79,6 +79,44 @@ class MyFirebase():
         confirmed = True
         return confirmed
 
+
+    def show_report(self, attributes_list, report):
+        data_fields = self.reports[report]
+        for i, child in enumerate(attributes_list.children):
+            field_name = report_fields[-i]
+            if field_name == "details":
+                child.text = data_fields[field_name]
+            elif field_name == "section":
+                child.children[1].text = ",".join(data_fields[field_name])
+            else:
+                try:
+                    child.children[1].text = str(data_fields[field_name])
+                except:
+                    continue
+
+    def update_report(self, attributes_list, id):
+        self.remove_report(id)
+        self.add_report(attributes_list, id)
+
+    def remove_report(self, id):
+        self.db.child("Brigades").child(self.localId).child("reports").child(id).remove()
+
+    def add_report(self, attributes_list, id=datetime.datetime.now().strftime('%Y-%m-%d_%H:%M')):
+        data_fields = dict()
+        for i, child in enumerate(attributes_list.children):
+            field_name = report_fields[-i]
+            if field_name == "details":
+                data_fields[field_name] = child.text
+            elif field_name == "section":
+                data_fields[field_name] = child.children[1].text.split(",")
+            else:
+                try:
+                    data_fields[field_name] = child.children[1].text
+                except:
+                    continue
+
+        self.db.child("Brigades").child(self.localId).child("reports").child(id).set(data_fields)
+
     def get_name(self):
         return self.account_data["name"]
 
@@ -106,25 +144,5 @@ class MyFirebase():
         else:
             return [member[0] for member in self.get_crew_members() if member[permission]]
 
-    # do napisania
-    def upgrade_report(self):
-        pass
-
-    def remove_report(self, id):
-        print(self.db.child("Brigades").child(self.localId).child("reports").child(id).remove())
-
-    def add_report(self, attributes_list):
-        data_fields = dict()
-        for i, child in enumerate(attributes_list.children):
-            field_name = report_fields[-i]
-            if field_name == "event_details":
-                data_fields[field_name] = child.text
-            elif field_name == "section":
-                data_fields[field_name] = child.children[1].text.split(",")
-            else:
-                try:
-                    data_fields[field_name] = child.children[1].text
-                except:
-                    continue
-        report_id = datetime.datetime.now().strftime('%Y-%m-%d_%H:%M')
-        self.db.child("Brigades").child(self.localId).child("reports").child(report_id).set(data_fields)
+    def get_field(self, report, field):
+        return self.reports[report][field]
