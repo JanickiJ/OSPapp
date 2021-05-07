@@ -44,8 +44,12 @@ class MyFirebase():
         except:
             print("Invalid email or password")
 
-    def sign_up(self, team_name, email_address, address, phone_number, password):
+    def sign_up(self, team_name, email_address, address, phone_number, password,password_repeated):
+
         app = App.get_running_app()
+        if password!=password_repeated:
+            app.sign_up_screen.ids['message'].text="PASSWORDS ARE NOT THE SAME"
+            return
         signup_url = "https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=" + self.wak
         signup_payload = {"team_name": team_name, "email": email_address, "address": address, "phone": phone_number,
                           "password": password, "returnSecureToken": True}
@@ -54,7 +58,8 @@ class MyFirebase():
         if not sign_up_request.ok:
             error_message = sign_up_data["error"]['message']
             app.sign_up_screen.ids['message'].text = error_message
-        if sign_up_request.ok:
+
+        else:
             refresh_token = sign_up_data['refreshToken']
             localId = sign_up_data['localId']
             idToken = sign_up_data['idToken']

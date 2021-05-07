@@ -166,7 +166,8 @@ class OSPApp(MDApp):
 
     def close_dialog(self, obj):
         self.dialog.dismiss()
-
+    def change_to_start(self):
+        self.screen_manager.switch_to(self.start_screen)
     def change_to_login(self):
         self.screen_manager.switch_to(self.log_in_screen)
 
@@ -339,11 +340,29 @@ class OSPApp(MDApp):
                                 Window.width - (dp(10) * 2)
                         ) / Window.width
         ).open()
+    def reset_password(self,obj):
+        pass
+    def forgot_password(self):
+        self.reset_textfield=MDTextField()
+        self.reset_textfield.hint_text="E-mail"
+        self.dialog = MDDialog(
+            title="Zresetuj hasło",
+            type="custom",
+            content_cls=self.reset_textfield,
+            buttons=[
+                MDFlatButton(
+                    text="ANULUJ", text_color=self.theme_cls.primary_color, on_release=self.close_dialog
+                ),
+                MDFlatButton(
+                    text="ZRESETUJ", text_color=self.theme_cls.primary_color, on_release=self.reset_password
+                ),
+            ],
+        )
+        self.dialog.open()
 
 
 class Tab1(MDFloatLayout, MDTabsBase):
     pass
-
 
 if __name__ == '__main__':
     OSPApp().run()

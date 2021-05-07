@@ -177,13 +177,20 @@ MDScreen:
                         size_hint_x: 0.39
                         pos_hint: {'center_x':0.7,'center_y':0.2}
                         md_bg_color:1,0,0,1
-                        on_release:app.myfirebase.sign_up(team_name.text,email_address.text,address.text,phone_number.text,password.text)
+                        on_release:app.myfirebase.sign_up(team_name.text,email_address.text,address.text,phone_number.text,password.text,repeat_password.text)
 
         MDLabel:
             text: 'Rejestracja'
             bold: True
             pos_hint: {'center_x':0.67,'center_y':0.9}
             font_style: 'H4'
+        MDIconButton:
+            id: back_button
+            icon:"arrow-left"
+            theme_text_color: "Custom"
+            text_color:0,0,0,1
+            pos_hint:{"center_x": .05, "center_y": .97}
+            on_release:app.change_to_start()
         MDLabel:
             id: Name
             text: 'Nazwa'
@@ -267,6 +274,13 @@ MDScreen:
                     size: self.size
                     pos: self.pos
         MDIconButton:
+            id: back_button
+            icon:"arrow-left"
+            theme_text_color: "Custom"
+            text_color:1,1,1,1
+            pos_hint:{"center_x": .05, "center_y": .97}
+            on_release:app.change_to_start()
+        MDIconButton:
             id: icon
             icon: 'account-circle'
             pos_hint:{'center_x':0.5,'center_y':0.8}
@@ -312,6 +326,7 @@ MDScreen:
             font_style:'Body2'
             theme_text_color:'Custom'
             text_color:1,0,0,1
+            on_release: app.forgot_password()
 """
 screen_change_helper = """
 ScreenManager:
@@ -351,11 +366,6 @@ ScreenManager:
 start_app_menu_helper = """
 MDScreen:
     name:'OSP App'
-    on_enter:
-        app.text(label)
-        app.text(button)
-        app.text(aclabel)
-        app.text(actext)
     MDFloatLayout:
         MDLabel:
             id: label
@@ -366,21 +376,18 @@ MDScreen:
             theme_text_color:'Custom'
             text_color:1,0,0,1
             font_style:'H5'
-            opacity:0
         MDRaisedButton:
             id:button
             text: "Zaloguj się"
             size_hint_x: 0.8
             pos_hint: {'center_x':0.5,'center_y':0.3}
             md_bg_color:1,0,0,1
-            opacity:0
             on_press: app.change_to_login()
         MDLabel:
             id:aclabel
             text:'Nie masz konta?'
             pos_hint:{'center_x':0.612,'center_y':0.22}
             font_style:'Body2'
-            opacity:0
         MDTextButton:
             id:actext
             text:'Zarejestruj się'
@@ -388,6 +395,5 @@ MDScreen:
             font_style:'Body2'
             theme_text_color:'Custom'
             text_color:1,0,0,1
-            opacity:0
             on_press: app.change_to_signup()
 """
