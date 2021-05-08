@@ -24,21 +24,23 @@ Screen:
                         pos_hint:{'center_x': .5, 'center_y': .225}
                         MDTabs:
                             id: tabs
+                            on_tab_switch: app.on_tab_switch(*args)
                             tab_display_mode: 'text'
                             MDTabsBase:
                                 id: rap_tab
                                 name: 'raport'
                                 text: "Nowy raport"
                             MDTabsBase:
-                                id: idc_tab
+                                id: ac_tab
                                 name: 'idc'
-                                text: "Dupa" 
+                                text: "Aktywne raporty" 
                             MDTabsBase:
                                 id: mem_tab
                                 name: 'members'
                                 text: "Członkowie"
                     MDCard:
                         Carousel:
+                            on_index: app.on_index(*args)
                             id: carousel
                             MDFloatLayout:
                                 id: add_report
@@ -319,7 +321,6 @@ Screen:
                         theme_text_color: "Error"
                         halign: "center"
                     
-    
                 MDLabel:
                     id: navi_name
                     text: "OSP"
@@ -338,15 +339,22 @@ Screen:
                     height: self.texture_size[1]
                 ScrollView:
                     MDList:
-                        OneLineIconListItem:
+                        MDRectangleFlatIconButton:
                             text: "Wyloguj"
-                            IconLeftWidget:
-                                icon: "logout"
-                        OneLineIconListItem:
+                            icon: "logout"
+                            size_hint_x:1
+                            size_hint_y:None
+                            text_color:0,0,0,1
+                            line_color: 0,0,0,0
+                            on_release:app.myfirebase.log_out()
+                        MDRectangleFlatIconButton:
                             text: "Twórcy"
-                            IconLeftWidget:
-                                icon: "creation"
-                                                      
+                            icon: "creation"
+                            size_hint_x:1
+                            size_hint_y:None
+                            text_color:0,0,0,1
+                            line_color: 0,0,0,0
+                            on_release:app.show_developers_info()                    
 """
 
 

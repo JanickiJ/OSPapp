@@ -320,6 +320,21 @@ MDScreen:
             size_hint_x:0.5
             md_bg_color:1,0,0,1
             on_release:app.sign_in(email_address.text,password.text)
+        Check:
+            id:save_password
+            active:True
+            pos_hint:{'center_x':.2,'center_y':0.29}
+            theme_text_color:'Custom'
+            color:(1,0,0,1)
+        MDLabel:
+            text:"Zapamiętaj hasło"
+            pos_hint:{'center_x':.75,'center_y':0.29}
+            font_size:'15sp'
+        MDLabel:
+            id:message
+            color:(1,0,0,1)
+            size_hint:0.8,0.1
+            pos_hint:{'center_x':0.5,'center_y':0.3}
         MDTextButton:
             text:'Zapomniałeś hasła?'
             pos_hint:{'center_x':0.48,'center_y':0.1}
@@ -327,6 +342,9 @@ MDScreen:
             theme_text_color:'Custom'
             text_color:1,0,0,1
             on_release: app.forgot_password()
+<Check@CheckBox>:
+    size_hint:None,None
+    size: dp(48),dp(48)
 """
 screen_change_helper = """
 ScreenManager:

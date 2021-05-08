@@ -4,7 +4,10 @@ import requests
 import json
 from kivy.app import App
 import pyrebase
-
+from kivymd.uix.label import MDLabel
+from kivymd.uix.dialog import MDDialog
+from kivymd.uix.button import MDFlatButton
+import os
 firebase_config = {
     "apiKey": "AIzaSyBXy9e5TqivFGRW_PqlXbEXH2xORqUhOzE",
     "authDomain": "ospapp-705a7.firebaseapp.com",
@@ -30,25 +33,34 @@ class MyFirebase():
         self.db = self.firebase.database()
         self.auth = self.firebase.auth()
         self.localId = None
+        self.dbId=None
         self.crew_members = None
         self.account_data = None
         self.reports = None
 
     def authentication(self, email, password):
+        app=App.get_running_app()
         try:
-            self.localId = self.auth.sign_in_with_email_and_password(email, password)["localId"]
+            user=self.auth.sign_in_with_email_and_password(email, password)
+            self.localId = user["localId"]
+            self.refreshtoken=user["refreshToken"]
+            with open('refresh_token.txt','w') as file:
+                file.write(self.refreshtoken)
+            self.dbId=self.db.child("Brigades").child(self.localId).child("dbId").get().val()
+            if self.dbId:
+                self.localId=self.dbId
             self.crew_members = self.db.child("Brigades").child(self.localId).child("crew_members").get().val()
             self.account_data = self.db.child("Brigades").child(self.localId).child("account_data").get().val()
             self.reports = self.db.child("Brigades").child(self.localId).child("reports").get().val()
-            print(self.reports)
         except:
-            print("Invalid email or password")
-
-    def sign_up(self, team_name, email_address, address, phone_number, password,password_repeated):
+            app.log_in_screen.ids['message'].text="Nieprawidłowy login lub hasło"
+            return False
+        return True
+    def sign_up(self, team_name, email_address, address, phone_number, password, password_repeated):
 
         app = App.get_running_app()
-        if password!=password_repeated:
-            app.sign_up_screen.ids['message'].text="PASSWORDS ARE NOT THE SAME"
+        if password != password_repeated:
+            app.sign_up_screen.ids['message'].text = "PASSWORDS ARE NOT THE SAME"
             return
         signup_url = "https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=" + self.wak
         signup_payload = {"team_name": team_name, "email": email_address, "address": address, "phone": phone_number,
@@ -71,19 +83,19 @@ class MyFirebase():
             # save idtoken to variable
             app.id_token = idToken
             # create new key in database from localid
-            my_data = '{"account_data":{"email":"","name":"","address":""},"crew_members":"","reports":""}'
+            my_data={'account_data':{'email':email_address,'name':team_name,'address':address},'crew_members':{},'reports':{}}
+            print(my_data)
+            data=json.dumps(my_data)
+            print(data)
             post_request = requests.patch(
                 "https://ospapp-705a7-default-rtdb.europe-west1.firebasedatabase.app/Brigades/" + localId + ".json?auth=" + idToken,
-                data=my_data)
-            print(post_request.ok)
-            print(json.loads(post_request.content.decode()))
+                data=data)
+            print(localId)
+            self.auth.send_email_verification(app.id_token)
+            app.verification_sent(email_address)
 
     def sign_in(self, email, password):
-        print(email, password)
-        self.authentication("haslo@gmail.com", "123456")
-        confirmed = True
-        return confirmed
-
+        return self.authentication(email,password)
 
     def show_report(self, attributes_list, report):
         data_fields = self.reports[report]
@@ -105,6 +117,7 @@ class MyFirebase():
 
     def remove_report(self, id):
         self.db.child("Brigades").child(self.localId).child("reports").child(id).remove()
+        self.reports=self.db.child("Brigades").child(self.localId).child("reports").get().val()
 
     def add_report(self, attributes_list, id=datetime.datetime.now().strftime('%Y-%m-%d_%H:%M')):
         data_fields = dict()
@@ -121,6 +134,7 @@ class MyFirebase():
                     continue
 
         self.db.child("Brigades").child(self.localId).child("reports").child(id).set(data_fields)
+        self.reports=self.db.child("Brigades").child(self.localId).child("reports").get().val()
 
     def get_name(self):
         return self.account_data["name"]
@@ -132,15 +146,17 @@ class MyFirebase():
         return self.account_data["address"]
 
     def get_active_reports(self):
-        return self.db.child("Brigades").child(self.localId).child("reports").get().val().keys()
-
+        if self.reports:
+            return self.db.child("Brigades").child(self.localId).child("reports").get().val().keys()
+        return []
     def get_crew_members(self):
         crew_member_list = []
-        for member, permissions in self.crew_members.items():
-            crew_member_list.append([member])
-            for permission in permissions.values():
-                if permission == 'True':
-                    crew_member_list[-1].append(True)
+        if self.crew_members:
+            for member, permissions in self.crew_members.items():
+                crew_member_list.append([member])
+                for permission in permissions.values():
+                    if permission == 'True':
+                        crew_member_list[-1].append(True)
         return crew_member_list
 
     def get_members_with_permission(self, permission):
@@ -151,3 +167,25 @@ class MyFirebase():
 
     def get_field(self, report, field):
         return self.reports[report][field]
+
+    def reset_password(self, email):
+        self.auth.send_password_reset_email(email)
+    def log_out(self):
+        app=App.get_running_app()
+        self.localId = None
+        self.crew_members = None
+        self.account_data = None
+        self.reports = None
+        e_mail_saved = ""
+        password_saved = ""
+        if os.stat('saved_password.txt').st_size != 0:
+            with open('saved_password.txt','r') as saved_password_file:
+                content = saved_password_file.read()
+                json_content = json.loads(content)
+                e_mail_saved, password_saved = json_content['email'], json_content['password']
+        app.log_in_screen.ids['email_address'].text = e_mail_saved
+        app.log_in_screen.ids['password'].text = password_saved
+        open('refresh_token.txt', 'w').close()
+        app.screen_manager.switch_to(app.log_in_screen)
+
+

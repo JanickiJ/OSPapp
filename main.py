@@ -1,5 +1,5 @@
 from datetime import datetime
-
+import os
 import kivymd.uix.list
 from kivy.animation import Animation
 from kivy.core.window import Window
@@ -14,6 +14,7 @@ from kivymd.uix.tab import MDTabsBase
 from kivymd.uix.button import MDFlatButton, MDIconButton
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.picker import MDTimePicker, MDDatePicker
+from kivymd.uix.list import ThreeLineListItem
 from kivymd.uix.list import TwoLineAvatarIconListItem, IconLeftWidget, IconRightWidget, ThreeLineAvatarIconListItem, \
     ThreeLineIconListItem, OneLineIconListItem, CheckboxLeftWidget, OneLineAvatarIconListItem, MDList
 from kivymd.uix.selectioncontrol import MDCheckbox
@@ -22,13 +23,13 @@ from kivymd.icon_definitions import md_icons
 from kivy.properties import StringProperty
 from kivymd.uix.boxlayout import BoxLayout
 from kivymd.uix.textfield import MDTextField
-
+import json
 from myfirebase import MyFirebase
 from helpers import sign_up_helper, \
     log_in_helper, start_app_menu_helper
 from menu_screen import menu_screen_helper
 from update_report_screen import update_report_screen_helper
-
+from kivymd.uix.label import MDLabel
 Window.size = (300, 500)
 
 
@@ -169,6 +170,15 @@ class OSPApp(MDApp):
     def change_to_start(self):
         self.screen_manager.switch_to(self.start_screen)
     def change_to_login(self):
+        e_mail_saved=""
+        password_saved=""
+        if os.stat('saved_password.txt').st_size!=0:
+            with open('saved_password.txt') as saved_password_file:
+                content=saved_password_file.read()
+                json_content=json.loads(content)
+                e_mail_saved,password_saved=json_content['email'],json_content['password']
+        self.log_in_screen.ids['email_address'].text=e_mail_saved
+        self.log_in_screen.ids['password'].text=password_saved
         self.screen_manager.switch_to(self.log_in_screen)
 
     def change_to_second_menu(self):
@@ -188,15 +198,19 @@ class OSPApp(MDApp):
 
     def sign_in(self, email_address, password):
         if self.myfirebase.sign_in(email_address, password):
+            self.log_in_screen.ids['message'].text=""
+            if self.log_in_screen.ids['save_password'].active:
+                load_data={'email':email_address,'password':password}
+                with open('saved_password.txt','w') as save_file:
+                    json.dump(load_data,save_file)
+            else:
+                open('saved_password.txt', 'w').close()
             self.make_first_screen()
             self.make_third_screen()
             self.make_second_screen()
 
             self.screen_manager.switch_to(self.menu_screen)
 
-        else:
-            # dopisac obsługe złych danych
-            print("Incorrect data")
 
     def nawigation_draw(self):
         print("nawigation draw")
@@ -233,12 +247,14 @@ class OSPApp(MDApp):
 
     def make_second_screen(self):
         self.menu_screen.ids.active_reports.clear_widgets()
-        for i, report in enumerate(self.myfirebase.get_active_reports()):
-            to_add = OneLineAvatarIconListItem(text=report)
-            to_add.add_widget(IconLeftWidget(icon='file-edit', on_release=self.edit_report))
-            to_add.add_widget(MDIconButton(icon="trash-can-outline", pos_hint={'center_x': .85, 'center_y': .5},
-                                           on_release=self.remove_report_dialog))
-            self.menu_screen.ids.active_reports.add_widget(to_add)
+        active_reports=self.myfirebase.get_active_reports()
+        if active_reports:
+            for i, report in enumerate(active_reports):
+                to_add = OneLineAvatarIconListItem(text=report)
+                to_add.add_widget(IconLeftWidget(icon='file-edit', on_release=self.edit_report))
+                to_add.add_widget(MDIconButton(icon="trash-can-outline", pos_hint={'center_x': .85, 'center_y': .5},
+                                               on_release=self.remove_report_dialog))
+                self.menu_screen.ids.active_reports.add_widget(to_add)
 
     def make_third_screen(self):
         for member in self.myfirebase.get_crew_members():
@@ -341,7 +357,9 @@ class OSPApp(MDApp):
                         ) / Window.width
         ).open()
     def reset_password(self,obj):
-        pass
+        self.myfirebase.reset_password(self.reset_textfield.text)
+        self.dialog.dismiss()
+        self.show_snackbar("E-mail został wysłany")
     def forgot_password(self):
         self.reset_textfield=MDTextField()
         self.reset_textfield.hint_text="E-mail"
@@ -355,11 +373,53 @@ class OSPApp(MDApp):
                 ),
                 MDFlatButton(
                     text="ZRESETUJ", text_color=self.theme_cls.primary_color, on_release=self.reset_password
-                ),
+                )
             ],
         )
         self.dialog.open()
-
+    def switch_to_log(self,obj):
+        self.screen_manager.switch_to(self.log_in_screen)
+        self.dialog.dismiss()
+    def verification_sent(self,email):
+        self.dialog = MDDialog(
+            title="Zweryfikuj swój e-mail",
+            type="custom",
+            content_cls=MDLabel(text=f"Link aktywacyjny został wysłany na twój adres e-mail: {email}"),
+            buttons=[
+                MDFlatButton(
+                    text="ZALOGUJ SIĘ", text_color=self.theme_cls.primary_color, on_release=self.switch_to_log
+                )
+            ]
+        )
+        self.dialog.size_hint = 1, None
+        self.dialog.open()
+    def show_developers_info(self):
+        three_line_list=ThreeLineIconListItem(text="Ania, Jakub",
+                                              secondary_text="ospapp@gmail.com",
+                                              tertiary_text="555444333")
+        three_line_list.add_widget(IconLeftWidget(icon='fire',text_color=self.theme_cls.primary_color,theme_text_color="Custom"))
+        self.dialog = MDDialog(
+            title="Twórcy aplikacji",
+            type="custom",
+            content_cls=three_line_list,
+            buttons=[
+                MDFlatButton(
+                    text="OK", text_color=self.theme_cls.primary_color, on_release=self.close_dialog
+                )
+            ]
+        )
+        self.dialog.size_hint = 1,None
+        self.dialog.open()
+    def on_tab_switch(self,instance_tabs,instance_tab,instance_tab_label,tab_text):
+        if tab_text=="Nowy raport":
+            i=0
+        elif tab_text=="Aktywne raporty":
+            i=1
+        else:
+            i=2
+        self.menu_screen.ids.carousel.load_slide(self.menu_screen.ids.carousel.slides[i])
+    def on_index(self,instance,value):
+        self.menu_screen.ids['tabs'].ids.carousel.load_slide(self.menu_screen.ids['tabs'].ids.carousel.slides[value])
 
 class Tab1(MDFloatLayout, MDTabsBase):
     pass
