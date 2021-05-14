@@ -1,4 +1,3 @@
-from kivy.lang import Builder
 from kivy.properties import StringProperty
 from kivy.uix.boxlayout import BoxLayout
 from kivymd.uix.list import OneLineIconListItem, TwoLineIconListItem, IconLeftWidget, TwoLineAvatarListItem
@@ -360,6 +359,7 @@ Screen:
 
 class ContentNavigationDrawer(BoxLayout):
     pass
+
 
 class ItemDrawer(OneLineIconListItem):
     icon = StringProperty()

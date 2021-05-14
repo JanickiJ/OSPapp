@@ -1,13 +1,10 @@
 import datetime
-
 import requests
 import json
 from kivy.app import App
 import pyrebase
-from kivymd.uix.label import MDLabel
-from kivymd.uix.dialog import MDDialog
-from kivymd.uix.button import MDFlatButton
 import os
+
 firebase_config = {
     "apiKey": "AIzaSyBXy9e5TqivFGRW_PqlXbEXH2xORqUhOzE",
     "authDomain": "ospapp-705a7.firebaseapp.com",

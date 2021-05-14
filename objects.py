@@ -1,8 +1,8 @@
-#raczej nie bd potrzebne
-
 from myfirebase import MyFirebase
+
+
 class OSP():
-    def __init__(self,firebase :MyFirebase):
+    def __init__(self, firebase: MyFirebase):
         self.db = firebase
         self.password = None
         self.email = self.db.get_email()
@@ -19,6 +19,7 @@ class FireFighter():
         self.is_driver = details[2]
         self.is_section_commander = details[3]
 
+
 class Report():
     def __init__(self):
         self.year = None
@@ -27,5 +28,3 @@ class Report():
         self.number = None
         self.action_commander = None
         self.arrival_time = None
-
-

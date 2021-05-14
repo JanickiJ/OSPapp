@@ -1,11 +1,10 @@
-from kivy.lang import Builder
 from kivy.properties import StringProperty
 from kivy.uix.boxlayout import BoxLayout
-from kivymd.uix.list import OneLineIconListItem, TwoLineIconListItem, IconLeftWidget, TwoLineAvatarListItem
+from kivymd.uix.list import OneLineIconListItem
 
 update_report_screen_helper = """
 Screen:
-    MDNavigationLayout:
+    NavigationLayout:
         ScreenManager:
             Screen:
                 BoxLayout:
