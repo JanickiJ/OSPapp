@@ -1,7 +1,7 @@
 # OSPapp
 KivyMD app during development.
-* **Navi** powinno działać ale nwm bo nie sprawdzałem, dopisać coś do twórców obsłużyć logout
-* **MenuGłówne** naprawić tabele i sprawdzic działanie dat i czasu
-* **Logowanie** chyba nie ma obsługi błednych danych, jak jest hasło zapisane to odrazu na menu główne
-* **Posprzątać** i pousówac kolory powinny automatycznie byc na czerwono w swoim kodzie 
-
+* **Wypełnianie raportów -** nie dziala date i time picker, usunąc przy miejscu ikone gps-crossbar, powiększyc miejsce na szczegóły
+* **Navi -** wkleic link do gita 
+* **Menu -** tablea co sie przesówa musi sie dostosowywac wymiarem 
+* **Pyrebase -** usunac wrzucanie smieci 
+* **Logowanie -** To logowanie co kminili

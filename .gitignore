@@ -1,9 +1,7 @@
 /venv/
 /.idea/add
-buildozer.spec
+
 try.py
 app_data.json
-bin/ospapp-0.1-armeabi-v7a-debug.apk
-bin
 __pycache__
-.buildozer/
+
