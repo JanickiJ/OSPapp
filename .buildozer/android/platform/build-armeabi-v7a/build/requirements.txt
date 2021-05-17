@@ -1,5 +1,0 @@
-certifi
-datetime
-kivymd
-pyrebase
-requests
