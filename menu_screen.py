@@ -76,7 +76,6 @@ Screen:
                                                 icon: "trash-can-outline"
                                                 pos_hint: {'center_x': .9, 'center_y': .5}
                                                 on_release: departure_date.text = "Data wyjazdu"
-
                                                 
                                         OneLineListItem:
                                             IconLeftWidget:

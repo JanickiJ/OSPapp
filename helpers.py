@@ -308,7 +308,6 @@ MDScreen:
             id:actext
             text:'Zarejestruj się'
             pos_hint:{'center_x':0.57,'center_y':0.22}
-            size_hint: 0.1,0.1
             font_style:'Body2'
             theme_text_color:'Custom'
             text_color:1,0,0,1
