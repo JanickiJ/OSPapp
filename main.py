@@ -57,7 +57,7 @@ class OSPApp(MDApp):
         anim.start(widget)
 
     def text(self, widget):
-        anim = Animation(opacity=0, duration=2)
+        anim = Animation(opacity=0, duration=0.5)
         anim += Animation(opacity=1)
         anim.start(widget)
 
@@ -160,7 +160,7 @@ class OSPApp(MDApp):
 
     def show_date_picker(self, id):
         self.current_button_id = id
-        date_dialog=MDDatePicker(on_save=self.on_save_data_picker,on_cancel=self.on_cancel_data_picker)
+        date_dialog=MDDatePicker(callback=self.on_save_data_picker)
         date_dialog.open()
 
     def show_time_picker(self, id):
@@ -295,6 +295,10 @@ class OSPApp(MDApp):
         ).open()
 
     def reset_password(self, obj):
+        if self.reset_textfield.text=="":
+            self.dialog.dismiss()
+            self.show_snackbar("Nie podano adresu e-mail")
+            return
         self.myfirebase.reset_password(self.reset_textfield.text)
         self.dialog.dismiss()
         self.show_snackbar("E-mail został wysłany")
@@ -338,7 +342,7 @@ class OSPApp(MDApp):
     def show_developers_info(self):
         three_line_list = ThreeLineIconListItem(text="Ania, Jakub",
                                                 secondary_text="ospapp@gmail.com",
-                                                tertiary_text="555444333")
+                                                tertiary_text="https://github.com/JanickiJ/OSPapp.git")
         three_line_list.add_widget(
             IconLeftWidget(icon='fire', text_color=self.theme_cls.primary_color, theme_text_color="Custom"))
         self.dialog = MDDialog(

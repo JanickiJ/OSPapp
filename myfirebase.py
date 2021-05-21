@@ -57,7 +57,7 @@ class MyFirebase():
 
         app = App.get_running_app()
         if password != password_repeated:
-            app.sign_up_screen.ids['message'].text = "PASSWORDS ARE NOT THE SAME"
+            app.sign_up_screen.ids['message'].text = "Hasła nie są identyczne"
             return
         signup_url = "https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=" + self.wak
         signup_payload = {"team_name": team_name, "email": email_address, "address": address, "phone": phone_number,

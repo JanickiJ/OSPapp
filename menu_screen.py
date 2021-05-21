@@ -4,7 +4,7 @@ from kivymd.uix.list import OneLineIconListItem, TwoLineIconListItem, IconLeftWi
 
 menu_screen_helper = """
 Screen:
-    MDNavigationLayout:
+    NavigationLayout:
         ScreenManager:
             Screen:
                 BoxLayout:
@@ -19,7 +19,7 @@ Screen:
                     BoxLayout:
                         id:tabox
                         orientation:'vertical'
-                        size_hint:1,0.125
+                        size_hint:1,0.1
                         pos_hint:{'center_x': .5, 'center_y': .225}
                         MDTabs:
                             id: tabs
@@ -103,10 +103,6 @@ Screen:
                                                 hint_text: 'Miejsce zdarzenia'
                                                 size_hint_x:0.6
                                                 pos_hint: {'center_x':0.5,'center_y':0.5}
-                                            MDIconButton:
-                                                icon: "crosshairs-gps"
-                                                pos_hint: {'center_x': .9, 'center_y': .5}
-
                                                 
                                         OneLineListItem:
                                             MDTextField:
@@ -206,12 +202,17 @@ Screen:
                                                 icon: "human-handsup"
                                                 pos_hint: {'center_x': .1, 'center_y': .5}
                                         
-                                        MDTextFieldRect:
-                                            id: details
-                                            multiline: True
-                                            hint_text: "Szczegóły zdarzenia"
-                                            size_hint: 1, None                              
-                                       
+                                        OneLineListItem:
+                                            MDTextFieldRect:
+                                                id: details
+                                                hint_text: "Szczegóły zdarzenia"
+                                                multiline: True
+                                                size_hint_x:0.6
+                                                pos_hint: {"center_x": .5, "center_y": .5}       
+                                            IconLeftWidget:
+                                                icon: "information-outline"
+                                                pos_hint: {'center_x': .1, 'center_y': .5}
+                                                                
                                         OneLineListItem:
                                             IconLeftWidget:
                                                 icon: "calendar-arrow-left"
@@ -324,12 +325,14 @@ Screen:
                     id: navi_name
                     text: "OSP"
                     font_style: "H5"
+                    font_size: "28sp"
                     size_hint_y: None
                     height: self.texture_size[1]
                 MDLabel:
                     id: navi_address
                     size_hint_y: None
                     font_style: "Caption"
+                    font_size: "20sp"
                     height: self.texture_size[1]
                 MDLabel:
                     id: navi_email

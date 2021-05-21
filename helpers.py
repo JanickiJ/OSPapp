@@ -9,6 +9,9 @@ MDScreen:
                     MDTextField:
                         id: team_name
                         hint_text: 'Nazwa załogi'
+                        required: True
+                        helper_text_mode: "on_error"
+                        helper_text: "Pole jest wymagane"
                         size_hint_x:0.8
                         pos_hint: {'center_x':0.5,'center_y':0.48}
                         current_hint_text_color:0,0,0,1
@@ -17,6 +20,9 @@ MDScreen:
                     MDTextField:   
                         id: email_address 
                         hint_text: 'Adres e-mail'
+                        required: True
+                        helper_text_mode: "on_error"
+                        helper_text: "Pole jest wymagane"
                         size_hint_x:0.8
                         pos_hint: {'center_x':0.5,'center_y':0.36}
                         current_hint_text_color:0,0,0,1
@@ -61,6 +67,9 @@ MDScreen:
                     MDTextField:
                         id:password
                         hint_text: 'Hasło'
+                        required: True
+                        helper_text_mode: "on_error"
+                        helper_text: "Pole jest wymagane"
                         size_hint_x:0.8
                         pos_hint: {'center_x':0.5,'center_y':0.48}
                         current_hint_text_color:0,0,0,1
@@ -70,6 +79,9 @@ MDScreen:
                     MDTextField:    
                         id: repeat_password
                         hint_text: 'Powtórz hasło'
+                        required: True
+                        helper_text_mode: "on_error"
+                        helper_text: "Pole jest wymagane"
                         size_hint_x:0.8
                         pos_hint: {'center_x':0.5,'center_y':0.36}
                         current_hint_text_color:0,0,0,1
@@ -252,11 +264,16 @@ MDScreen:
             pos_hint:{'center_x':0.5,'center_y':0.3}
         MDTextButton:
             text:'Zapomniałeś hasła?'
-            pos_hint:{'center_x':0.48,'center_y':0.1}
+            pos_hint:{'center_x':0.5,'center_y':0.13}
             font_style:'Body2'
             theme_text_color:'Custom'
             text_color:1,0,0,1
             on_release: app.forgot_password()
+        MDLabel:
+            id:message
+            color:(1,0,0,1)
+            size_hint:0.8,0.1
+            pos_hint:{'center_x':0.55,'center_y':0.3}
 <Check@CheckBox>:
     size_hint:None,None
     size: dp(48),dp(48)
@@ -285,12 +302,13 @@ MDScreen:
         MDLabel:
             id:aclabel
             text:'Nie masz konta?'
-            pos_hint:{'center_x':0.612,'center_y':0.22}
+            pos_hint:{'center_x':0.85,'center_y':0.22}
             font_style:'Body2'
         MDTextButton:
             id:actext
             text:'Zarejestruj się'
-            pos_hint:{'center_x':0.65,'center_y':0.22}
+            pos_hint:{'center_x':0.57,'center_y':0.22}
+            size_hint: 0.1,0.1
             font_style:'Body2'
             theme_text_color:'Custom'
             text_color:1,0,0,1

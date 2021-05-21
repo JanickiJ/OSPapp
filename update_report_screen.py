@@ -4,7 +4,7 @@ from kivymd.uix.list import OneLineIconListItem
 
 update_report_screen_helper = """
 Screen:
-    MDNavigationLayout:
+    NavigationLayout:
         ScreenManager:
             Screen:
                 BoxLayout:
