@@ -4,7 +4,7 @@ from kivymd.uix.list import OneLineIconListItem, TwoLineIconListItem, IconLeftWi
 
 menu_screen_helper = """
 Screen:
-    NavigationLayout:
+    MDNavigationLayout:
         ScreenManager:
             Screen:
                 BoxLayout:
