@@ -1,2 +1,0 @@
-google-cloud
-https://github.com/kivymd/kivymd/archive/master.zip
