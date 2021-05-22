@@ -151,11 +151,7 @@ class OSPApp(MDApp):
     def nawigation_draw(self):
         print("nawigation draw")
 
-<<<<<<< HEAD
-    def on_save_data_picker(self,instance,value,date_range):
-=======
     def on_save_data_picker(self, instance, value, date_range):
->>>>>>> repair
         self.current_button_id.text = str(value)
 
     def on_cancel_data_picker(self, instance, value):
@@ -163,32 +159,21 @@ class OSPApp(MDApp):
 
     def show_date_picker(self, id):
         self.current_button_id = id
-<<<<<<< HEAD
-        date_dialog=MDDatePicker()
-        date_dialog.bind(on_save=self.on_save_data_picker,on_cancel=self.on_cancel_data_picker)
-=======
         date_dialog = MDDatePicker()
         date_dialog.bind(on_save=self.on_save_data_picker, on_cancel=self.on_cancel_data_picker)
->>>>>>> repair
+
         date_dialog.open()
 
     def show_time_picker(self, id):
         self.current_button_id = id
         time_dialog = MDTimePicker()
         time_dialog.set_time(datetime.now())
-<<<<<<< HEAD
-        time_dialog.bind(on_save=self.on_save_time_picker,on_cancel=self.on_cancel_time_picker)
-        time_dialog.open()
-
-    def on_save_time_picker(self, instance,value):
-        self.current_button_id.text=instance.ids._time_input.ids.hour.text+":"+instance.ids._time_input.ids.minute.text
-=======
         time_dialog.bind(on_save=self.on_save_time_picker, on_cancel=self.on_cancel_time_picker)
         time_dialog.open()
 
     def on_save_time_picker(self, instance, value):
         self.current_button_id.text = instance.ids._time_input.ids.hour.text + ":" + instance.ids._time_input.ids.minute.text
->>>>>>> repair
+
 
     def on_cancel_time_picker(self, instance, value):
         print(instance, value)
@@ -312,11 +297,7 @@ class OSPApp(MDApp):
         ).open()
 
     def reset_password(self, obj):
-<<<<<<< HEAD
-        if self.reset_textfield.text=="":
-=======
         if self.reset_textfield.text == "":
->>>>>>> repair
             self.dialog.dismiss()
             self.show_snackbar("Nie podano adresu e-mail")
             return

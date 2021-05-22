@@ -74,11 +74,8 @@ Screen:
                                                 icon: "trash-can-outline"
                                                 pos_hint: {'center_x': .9, 'center_y': .5}
                                                 on_release: departure_date.text = "Data wyjazdu"
-<<<<<<< HEAD
                                                 
-=======
 
->>>>>>> repair
                                         OneLineListItem:
                                             IconLeftWidget:
                                                 icon: "clock-alert-outline"
@@ -103,11 +100,8 @@ Screen:
                                                 hint_text: 'Miejsce zdarzenia'
                                                 size_hint_x:0.6
                                                 pos_hint: {'center_x':0.5,'center_y':0.5}
-<<<<<<< HEAD
-                                                
-=======
 
->>>>>>> repair
+
                                         OneLineListItem:
                                             MDTextField:
                                                 id: type_of_event
@@ -204,11 +198,8 @@ Screen:
                                             IconLeftWidget:
                                                 icon: "human-handsup"
                                                 pos_hint: {'center_x': .1, 'center_y': .5}
-<<<<<<< HEAD
                                         
-=======
 
->>>>>>> repair
                                         OneLineListItem:
                                             MDTextFieldRect:
                                                 id: details
@@ -219,11 +210,8 @@ Screen:
                                             IconLeftWidget:
                                                 icon: "information-outline"
                                                 pos_hint: {'center_x': .1, 'center_y': .5}
-<<<<<<< HEAD
                                                                 
-=======
 
->>>>>>> repair
                                         OneLineListItem:
                                             IconLeftWidget:
                                                 icon: "calendar-arrow-left"
