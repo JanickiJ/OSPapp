@@ -5,3 +5,5 @@ try.py
 app_data.json
 __pycache__
 
+/.buildozer/
+/bin/

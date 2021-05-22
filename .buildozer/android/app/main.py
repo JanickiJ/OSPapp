@@ -161,6 +161,7 @@ class OSPApp(MDApp):
         self.current_button_id = id
         date_dialog = MDDatePicker()
         date_dialog.bind(on_save=self.on_save_data_picker, on_cancel=self.on_cancel_data_picker)
+
         date_dialog.open()
 
     def show_time_picker(self, id):
@@ -172,6 +173,7 @@ class OSPApp(MDApp):
 
     def on_save_time_picker(self, instance, value):
         self.current_button_id.text = instance.ids._time_input.ids.hour.text + ":" + instance.ids._time_input.ids.minute.text
+
 
     def on_cancel_time_picker(self, instance, value):
         print(instance, value)

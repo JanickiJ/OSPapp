@@ -74,6 +74,7 @@ Screen:
                                                 icon: "trash-can-outline"
                                                 pos_hint: {'center_x': .9, 'center_y': .5}
                                                 on_release: departure_date.text = "Data wyjazdu"
+                                                
 
                                         OneLineListItem:
                                             IconLeftWidget:
@@ -90,6 +91,7 @@ Screen:
                                                 pos_hint: {'center_x': .9, 'center_y': .5}
                                                 on_release: arrival_time.text = "Czas na miejscu"
 
+
                                         OneLineListItem:
                                             IconLeftWidget:
                                                 icon: "map-marker"
@@ -100,6 +102,8 @@ Screen:
                                                 size_hint_x:0.6
                                                 pos_hint: {'center_x':0.5,'center_y':0.5}
 
+
+
                                         OneLineListItem:
                                             MDTextField:
                                                 id: type_of_event
@@ -109,6 +113,7 @@ Screen:
                                             IconLeftWidget:
                                                 icon: "fire"
                                                 pos_hint: {'center_x': .1, 'center_y': .5}
+
 
                                         OneLineListItem:
                                             IconLeftWidget:
@@ -127,6 +132,7 @@ Screen:
                                                     section_commander.text = "Dowódca sekcji"
                                                     app.chosen_members.clear()
 
+
                                         OneLineListItem:
                                             IconLeftWidget:
                                                 icon: "account-cog-outline"
@@ -143,6 +149,7 @@ Screen:
                                                 on_release: 
                                                     action_commander.text = "Dowódca akcji"
                                                     app.chosen_members.clear()                    
+
 
                                         OneLineListItem:
                                             IconLeftWidget:
@@ -177,6 +184,7 @@ Screen:
                                                     section.text = "Sekcja"
                                                     app.chosen_members.clear()                                                 
 
+
                                         OneLineListItem:
                                             MDTextField:
                                                 id: perpetrator
@@ -187,6 +195,7 @@ Screen:
                                                 icon: "account-alert-outline"
                                                 pos_hint: {'center_x': .1, 'center_y': .5}
 
+
                                         OneLineListItem:
                                             MDTextField:
                                                 id: victim
@@ -196,6 +205,8 @@ Screen:
                                             IconLeftWidget:
                                                 icon: "human-handsup"
                                                 pos_hint: {'center_x': .1, 'center_y': .5}
+                                        
+
 
                                         OneLineListItem:
                                             MDTextFieldRect:
@@ -207,6 +218,8 @@ Screen:
                                             IconLeftWidget:
                                                 icon: "information-outline"
                                                 pos_hint: {'center_x': .1, 'center_y': .5}
+                                                                
+
 
                                         OneLineListItem:
                                             IconLeftWidget:
@@ -223,6 +236,7 @@ Screen:
                                                 pos_hint: {'center_x': .9, 'center_y': .5}
                                                 on_release: return_date.text = "Data powrotu"
 
+
                                         OneLineListItem:
                                             IconLeftWidget:
                                                 icon: "clock-end"
@@ -237,6 +251,7 @@ Screen:
                                                 icon: "trash-can-outline"
                                                 pos_hint: {'center_x': .9, 'center_y': .5}
                                                 on_release: finished_action_time.text = "Godzina zakończenia"
+
 
                                         OneLineListItem:
                                             IconLeftWidget:
@@ -253,6 +268,7 @@ Screen:
                                                 pos_hint: {'center_x': .9, 'center_y': .5}
                                                 on_release: return_time.text = "Godzina w remizie"
 
+
                                         OneLineListItem:
                                             MDTextField:
                                                 id: odometer
@@ -262,6 +278,7 @@ Screen:
                                             IconLeftWidget:
                                                 icon: "speedometer"
                                                 pos_hint: {'center_x': .1, 'center_y': .5}
+
 
                                         OneLineListItem:
                                             MDTextField:
@@ -274,7 +291,6 @@ Screen:
                                                 pos_hint: {'center_x': .1, 'center_y': .5}
 
                                         OneLineListItem:
-
                                 MDFloatingActionButton:
                                     icon: "content-save"
                                     md_bg_color: app.theme_cls.primary_color
@@ -292,10 +308,12 @@ Screen:
                                     pos_hint: {'center_x': .89, 'center_y': .09}
                                     on_release: app.make_second_screen()
 
+
                             MDFloatLayout:
                                 ScrollView:
                                     MDList:
                                         id: crew_members                           
+
 
         MDNavigationDrawer:
             id: nav_drawer
@@ -304,10 +322,12 @@ Screen:
                 padding: "8dp"
                 spacing: "8dp"
 
+
                 AnchorLayout:
                     anchor_x: "left"
                     size_hint_y: None
                     height: navigator_icon.height
+
 
                     MDIcon:
                         id: navigator_icon
@@ -315,6 +335,7 @@ Screen:
                         font_size: "72sp"                        
                         theme_text_color: "Error"
                         halign: "center"
+
 
                 MDLabel:
                     id: navi_name
