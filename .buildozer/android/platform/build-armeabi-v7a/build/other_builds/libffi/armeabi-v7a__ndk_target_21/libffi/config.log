@@ -28,8 +28,6 @@ uname -v = #60~20.04.1-Ubuntu SMP Thu May 6 09:52:46 UTC 2021
 /bin/universe          = unknown
 
 PATH: /home/ja/.buildozer/android/platform/android-ndk-r19b/toolchains/llvm/prebuilt/linux-x86_64/bin
-PATH: /home/ja/.buildozer/android/platform/android-ndk-r19b/toolchains/llvm/prebuilt/linux-x86_64/bin
-PATH: /home/ja/.buildozer/android/platform/android-ndk-r19b/toolchains/llvm/prebuilt/linux-x86_64/bin
 PATH: /home/ja/.buildozer/android/platform/android-ndk-r19b/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86/bin/
 PATH: /home/ja/.buildozer/android/platform/android-ndk-r19b/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/bin/
 PATH: /home/ja/.buildozer/android/platform/android-ndk-r19b
@@ -57,6 +55,7 @@ configure:2734: checking host system type
 configure:2747: result: arm-unknown-linux-androideabi
 configure:2767: checking target system type
 configure:2780: result: arm-unknown-linux-androideabi
+configure:2839: toplevel srcdir already configured... skipping subdir build
 configure:2877: checking for gsed
 configure:2908: result: sed
 configure:2936: checking for a BSD-compatible install
@@ -910,7 +909,7 @@ configure:13036: $? = 0
 configure:13036: result: yes
 configure:13036: checking for mkostemp
 configure:13036: /home/ja/.buildozer/android/platform/android-ndk-r19b/toolchains/llvm/prebuilt/linux-x86_64/bin/clang -target armv7a-linux-androideabi21 -fomit-frame-pointer -march=armv7-a -mfloat-abi=softfp -mfpu=vfp -mthumb -fPIC -o conftest -target armv7a-linux-androideabi21 -fomit-frame-pointer -march=armv7-a -mfloat-abi=softfp -mfpu=vfp -mthumb -fPIC -Wall -fexceptions -DANDROID -D__ANDROID_API__=21 -I/home/ja/.buildozer/android/platform/android-ndk-r19b/sysroot/usr/include/arm-linux-androideabi -I/home/ja/Programy/OspApp/OSPapp/.buildozer/android/platform/build-armeabi-v7a/build/python-installs/ospapp/include/python3.8   -L/home/ja/Programy/OspApp/OSPapp/.buildozer/android/platform/build-armeabi-v7a/build/libs_collections/ospapp/armeabi-v7a conftest.c  >&5
-/tmp/conftest-588bf4.o:conftest.c:function main: error: undefined reference to 'mkostemp'
+/tmp/conftest-b80048.o:conftest.c:function main: error: undefined reference to 'mkostemp'
 clang: error: linker command failed with exit code 1 (use -v to see invocation)
 configure:13036: $? = 1
 configure: failed program was:
@@ -2099,7 +2098,8 @@ config.status:1232: creating doc/Makefile
 config.status:1232: creating libffi.pc
 config.status:1232: creating fficonfig.h
 config.status:1461: executing buildir commands
-config.status:1474: skipping top_srcdir/Makefile - not created
+config.status:1597: keeping top_srcdir/Makefile from earlier configure
+config.status:1606: build in no (HOST=)
 config.status:1461: executing depfiles commands
 config.status:1682: cd .       && sed -e '/# am--include-marker/d' Makefile         | make -j4 -f - am--depfiles
 config.status:1687: $? = 0

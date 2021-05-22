@@ -545,7 +545,7 @@ ax_enable_builddir_version="3.3-rc0"                  # 3.3-rc0
 ax_enable_builddir_package="libffi"                  # libffi
 ax_enable_builddir_auxdir="/home/ja/Programy/OspApp/OSPapp/.buildozer/android/platform/build-armeabi-v7a/build/other_builds/libffi/armeabi-v7a__ndk_target_21/libffi" # 
 ax_enable_builddir_sed="sed"       # /usr/bin/sed
-ax_enable_builddir="."               # 
+ax_enable_builddir="no"               # 
 
 AMDEP_TRUE="" MAKE="make -j4"
 
