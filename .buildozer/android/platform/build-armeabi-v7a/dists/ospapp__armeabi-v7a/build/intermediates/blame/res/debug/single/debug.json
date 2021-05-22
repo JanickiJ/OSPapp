@@ -1,0 +1,42 @@
+[
+    {
+        "merged": "/home/ja/Programy/OspApp/OSPapp/.buildozer/android/platform/build-armeabi-v7a/dists/ospapp__armeabi-v7a/build/intermediates/res/merged/debug/drawable_presplash.jpg.flat",
+        "source": "/home/ja/Programy/OspApp/OSPapp/.buildozer/android/platform/build-armeabi-v7a/dists/ospapp__armeabi-v7a/src/main/res/drawable/presplash.jpg"
+    },
+    {
+        "merged": "/home/ja/Programy/OspApp/OSPapp/.buildozer/android/platform/build-armeabi-v7a/dists/ospapp__armeabi-v7a/build/intermediates/res/merged/debug/drawable_icon.png.flat",
+        "source": "/home/ja/Programy/OspApp/OSPapp/.buildozer/android/platform/build-armeabi-v7a/dists/ospapp__armeabi-v7a/src/main/res/drawable/icon.png"
+    },
+    {
+        "merged": "/home/ja/Programy/OspApp/OSPapp/.buildozer/android/platform/build-armeabi-v7a/dists/ospapp__armeabi-v7a/build/intermediates/res/merged/debug/layout_project_chooser.xml.flat",
+        "source": "/home/ja/Programy/OspApp/OSPapp/.buildozer/android/platform/build-armeabi-v7a/dists/ospapp__armeabi-v7a/src/main/res/layout/project_chooser.xml"
+    },
+    {
+        "merged": "/home/ja/Programy/OspApp/OSPapp/.buildozer/android/platform/build-armeabi-v7a/dists/ospapp__armeabi-v7a/build/intermediates/res/merged/debug/drawable-hdpi_ic_launcher.png.flat",
+        "source": "/home/ja/Programy/OspApp/OSPapp/.buildozer/android/platform/build-armeabi-v7a/dists/ospapp__armeabi-v7a/src/main/res/drawable-hdpi/ic_launcher.png"
+    },
+    {
+        "merged": "/home/ja/Programy/OspApp/OSPapp/.buildozer/android/platform/build-armeabi-v7a/dists/ospapp__armeabi-v7a/build/intermediates/res/merged/debug/drawable-xxhdpi_ic_launcher.png.flat",
+        "source": "/home/ja/Programy/OspApp/OSPapp/.buildozer/android/platform/build-armeabi-v7a/dists/ospapp__armeabi-v7a/src/main/res/drawable-xxhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "/home/ja/Programy/OspApp/OSPapp/.buildozer/android/platform/build-armeabi-v7a/dists/ospapp__armeabi-v7a/build/intermediates/res/merged/debug/drawable-mdpi_ic_launcher.png.flat",
+        "source": "/home/ja/Programy/OspApp/OSPapp/.buildozer/android/platform/build-armeabi-v7a/dists/ospapp__armeabi-v7a/src/main/res/drawable-mdpi/ic_launcher.png"
+    },
+    {
+        "merged": "/home/ja/Programy/OspApp/OSPapp/.buildozer/android/platform/build-armeabi-v7a/dists/ospapp__armeabi-v7a/build/intermediates/res/merged/debug/layout_project_empty.xml.flat",
+        "source": "/home/ja/Programy/OspApp/OSPapp/.buildozer/android/platform/build-armeabi-v7a/dists/ospapp__armeabi-v7a/src/main/res/layout/project_empty.xml"
+    },
+    {
+        "merged": "/home/ja/Programy/OspApp/OSPapp/.buildozer/android/platform/build-armeabi-v7a/dists/ospapp__armeabi-v7a/build/intermediates/res/merged/debug/drawable-xhdpi_ic_launcher.png.flat",
+        "source": "/home/ja/Programy/OspApp/OSPapp/.buildozer/android/platform/build-armeabi-v7a/dists/ospapp__armeabi-v7a/src/main/res/drawable-xhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "/home/ja/Programy/OspApp/OSPapp/.buildozer/android/platform/build-armeabi-v7a/dists/ospapp__armeabi-v7a/build/intermediates/res/merged/debug/layout_chooser_item.xml.flat",
+        "source": "/home/ja/Programy/OspApp/OSPapp/.buildozer/android/platform/build-armeabi-v7a/dists/ospapp__armeabi-v7a/src/main/res/layout/chooser_item.xml"
+    },
+    {
+        "merged": "/home/ja/Programy/OspApp/OSPapp/.buildozer/android/platform/build-armeabi-v7a/dists/ospapp__armeabi-v7a/build/intermediates/res/merged/debug/layout_main.xml.flat",
+        "source": "/home/ja/Programy/OspApp/OSPapp/.buildozer/android/platform/build-armeabi-v7a/dists/ospapp__armeabi-v7a/src/main/res/layout/main.xml"
+    }
+]

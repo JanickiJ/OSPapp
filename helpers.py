@@ -105,7 +105,6 @@ MDScreen:
                         pos_hint: {'center_x':0.7,'center_y':0.2}
                         md_bg_color:1,0,0,1
                         on_release:app.myfirebase.sign_up(team_name.text,email_address.text,address.text,phone_number.text,password.text,repeat_password.text)
-
         MDLabel:
             text: 'Rejestracja'
             bold: True
