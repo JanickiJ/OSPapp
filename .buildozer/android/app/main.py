@@ -25,7 +25,6 @@ from update_report_screen import update_report_screen_helper
 from kivymd.uix.label import MDLabel
 
 
-
 class OSPApp(MDApp):
 
     def change_screen(self, name):
@@ -152,7 +151,7 @@ class OSPApp(MDApp):
     def nawigation_draw(self):
         print("nawigation draw")
 
-    def on_save_data_picker(self,instance,value,date_range):
+    def on_save_data_picker(self, instance, value, date_range):
         self.current_button_id.text = str(value)
 
     def on_cancel_data_picker(self, instance, value):
@@ -160,19 +159,19 @@ class OSPApp(MDApp):
 
     def show_date_picker(self, id):
         self.current_button_id = id
-        date_dialog=MDDatePicker()
-        date_dialog.bind(on_save=self.on_save_data_picker,on_cancel=self.on_cancel_data_picker)
+        date_dialog = MDDatePicker()
+        date_dialog.bind(on_save=self.on_save_data_picker, on_cancel=self.on_cancel_data_picker)
         date_dialog.open()
 
     def show_time_picker(self, id):
         self.current_button_id = id
         time_dialog = MDTimePicker()
         time_dialog.set_time(datetime.now())
-        time_dialog.bind(on_save=self.on_save_time_picker,on_cancel=self.on_cancel_time_picker)
+        time_dialog.bind(on_save=self.on_save_time_picker, on_cancel=self.on_cancel_time_picker)
         time_dialog.open()
 
-    def on_save_time_picker(self, instance,value):
-        self.current_button_id.text=instance.ids._time_input.ids.hour.text+":"+instance.ids._time_input.ids.minute.text
+    def on_save_time_picker(self, instance, value):
+        self.current_button_id.text = instance.ids._time_input.ids.hour.text + ":" + instance.ids._time_input.ids.minute.text
 
     def on_cancel_time_picker(self, instance, value):
         print(instance, value)
@@ -296,7 +295,7 @@ class OSPApp(MDApp):
         ).open()
 
     def reset_password(self, obj):
-        if self.reset_textfield.text=="":
+        if self.reset_textfield.text == "":
             self.dialog.dismiss()
             self.show_snackbar("Nie podano adresu e-mail")
             return
