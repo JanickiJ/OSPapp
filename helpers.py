@@ -301,12 +301,12 @@ MDScreen:
         MDLabel:
             id:aclabel
             text:'Nie masz konta?'
-            pos_hint:{'center_x':0.85,'center_y':0.22}
+            pos_hint:{'center_x':0.70,'center_y':0.22}
             font_style:'Body2'
         MDTextButton:
             id:actext
             text:'Zarejestruj się'
-            pos_hint:{'center_x':0.57,'center_y':0.22}
+            pos_hint:{'center_x':0.67,'center_y':0.22}
             font_style:'Body2'
             theme_text_color:'Custom'
             text_color:1,0,0,1

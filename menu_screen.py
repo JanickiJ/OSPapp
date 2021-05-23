@@ -19,7 +19,7 @@ Screen:
                     BoxLayout:
                         id:tabox
                         orientation:'vertical'
-                        size_hint:1,0.1
+                        size_hint:1,0.125
                         pos_hint:{'center_x': .5, 'center_y': .225}
                         MDTabs:
                             id: tabs
