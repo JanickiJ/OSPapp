@@ -4,7 +4,7 @@ z akcji za pomocą telefonu. Jest integralną częscią aplikacji desktopowej. :
 
 ### Wizualizacja :iphone:
 
-![](visuals.gif)
+![](visuals.mp4)
 
 ### Instalacja  :gear:
 
