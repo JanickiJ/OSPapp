@@ -20,6 +20,13 @@ report_fields = ["departure_time", "departure_date", "arrival_time", "event_loca
                  "section_commander", "action_commander", "driver", "section", "perpetrator",
                  "victim", "details", "return_date", "finished_action_time", "return_time",
                  "odometer", "distance_to_event"]
+base_fields = {"departure_time":"Czas wyjazdu", "departure_date":"Data wyjazdu", "arrival_time":"Czas na miejscu",
+				 "event_location":"Miejsce zdarzenia", "type_of_event":"Rodzaj zdarzenia",
+                 "section_commander":"Dowódca sekcji", "action_commander":"Dowódca akcji", "driver":"Kierowca",
+                  "section":"Sekcja", "perpetrator":"Sprawca",
+                 "victim":"Poszkodowany", "details":"Szczegóły zdarzenia", "return_date":"Data powrotu",
+                  "finished_action_time":"Godzina zakończenia", "return_time":"Godzina w remizie",
+                 "odometer":"Stan licznika", "distance_to_event":"Km. do miejsca zdarzenia"}
 
 
 class MyFirebase():
@@ -49,6 +56,12 @@ class MyFirebase():
             self.crew_members = self.db.child("Brigades").child(self.localId).child("crew_members").get().val()
             self.account_data = self.db.child("Brigades").child(self.localId).child("account_data").get().val()
             self.reports = self.db.child("Brigades").child(self.localId).child("reports").get().val()
+            #to_remove=[]
+            #for report, items in self.reports.items():
+            	#if items['is_completed']==True:
+            		#to_remove.append(report)
+            #for item in to_remove:
+            	#self.reports.pop(item)
         except:
             app.log_in_screen.ids['message'].text = "Nieprawidłowy login lub hasło"
             return False
@@ -99,14 +112,18 @@ class MyFirebase():
     def show_report(self, attributes_list, report):
         data_fields = self.reports[report]
         for i, child in enumerate(attributes_list.children):
-            field_name = report_fields[-i]
-            if field_name == "details":
-                child.text = data_fields[field_name]
-            elif field_name == "section":
-                child.children[1].text = ",".join(data_fields[field_name])
+            field_name = report_fields[-(i+1)]
+            if field_name == "section":
+            	if data_fields[field_name]=="":
+            		child.children[1].text = base_fields[field_name]
+            	else:
+            		child.children[1].text = ",".join(data_fields[field_name])
             else:
                 try:
-                    child.children[1].text = str(data_fields[field_name])
+                	if data_fields[field_name]=="":
+                		child.children[1].text = base_fields[field_name]
+                	else:
+                		child.children[1].text = str(data_fields[field_name])
                 except:
                     continue
 
@@ -121,17 +138,22 @@ class MyFirebase():
     def add_report(self, attributes_list, id=datetime.datetime.now().strftime('%Y-%m-%d_%H:%M')):
         data_fields = dict()
         for i, child in enumerate(attributes_list.children):
-            field_name = report_fields[-i]
-            if field_name == "details":
-                data_fields[field_name] = child.text
-            elif field_name == "section":
-                data_fields[field_name] = child.children[1].text.split(",")
+            field_name = report_fields[-(i+1)]
+            if field_name == "section":
+            	if child.children[1].text==base_fields[field_name]:
+            		data_fields[field_name]=""
+            	else:
+            		data_fields[field_name] = child.children[1].text.split(",")
             else:
                 try:
-                    data_fields[field_name] = child.children[1].text
+                	if child.children[1].text==base_fields[field_name]:
+                		data_fields[field_name]=""
+                	else:
+                		data_fields[field_name] = child.children[1].text
                 except:
                     continue
 
+        data_fields['is_completed']=False
         self.db.child("Brigades").child(self.localId).child("reports").child(id).set(data_fields)
         self.reports = self.db.child("Brigades").child(self.localId).child("reports").get().val()
 
@@ -152,14 +174,21 @@ class MyFirebase():
     def get_crew_members(self):
         crew_member_list = []
         if self.crew_members:
-            for member, permissions in self.crew_members.items():
-                crew_member_list.append([member])
-                for permission in permissions.values():
-                    if permission == 'True':
-                        crew_member_list[-1].append(True)
-                    else:
-                        crew_member_list[-1].append(False)
-
+            for member, attributes in self.crew_members.items():
+                crew_member_list.append([str(attributes['name']+' '+str(attributes['last_name']))])
+                if attributes['action_commander']==True:
+                    crew_member_list[-1].append(True)
+                else:
+                    crew_member_list[-1].append(False)
+                if attributes['driver']==True:
+                    crew_member_list[-1].append(True)
+                else:
+                    crew_member_list[-1].append(False)
+                if attributes['section_commander']==True:
+                    crew_member_list[-1].append(True)
+                else:
+                    crew_member_list[-1].append(False)
+            print(crew_member_list)
         return crew_member_list
 
     def get_members_with_permission(self, permission):

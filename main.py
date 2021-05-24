@@ -191,7 +191,7 @@ class OSPApp(MDApp):
             for i, report in enumerate(active_reports):
                 to_add = OneLineAvatarIconListItem(text=report)
                 to_add.add_widget(IconLeftWidget(icon='file-edit', on_release=self.edit_report))
-                to_add.add_widget(MDIconButton(icon="trash-can-outline", pos_hint={'center_x': .85, 'center_y': .5},
+                to_add.add_widget(MDIconButton(icon="trash-can-outline", pos_hint={'center_x': .8, 'center_y': .5},
                                                on_release=self.remove_report_dialog))
                 self.menu_screen.ids.active_reports.add_widget(to_add)
 
