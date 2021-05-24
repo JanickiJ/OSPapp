@@ -175,8 +175,8 @@ Screen:
                                                 pos_hint: {"center_x": .5, "center_y": .5}       
                                             IconLeftWidget:
                                                 icon: "information-outline"
-                                                pos_hint: {'center_x': .1, 'center_y': .5}                              
-                                        OneLineListItem:
+                                                pos_hint: {'center_x': .1, 'center_y': .5}
+                                        OneLineListItem:                          
                                             IconLeftWidget:
                                                 icon: "calendar-arrow-left"
                                                 pos_hint: {'center_x': .1, 'center_y': .5}

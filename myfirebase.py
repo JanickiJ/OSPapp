@@ -111,17 +111,14 @@ class MyFirebase():
         return self.authentication(email, password)
 
     def show_report(self, attributes_list, report):
-        data_fields = self.reports[report]
-        for i, child in enumerate(attributes_list.children):
+    	data_fields = self.reports[report]
+    	for i, child in enumerate(attributes_list.children):
             field_name = report_fields[-(i+1)]
             if field_name == "section":
-            	if data_fields[field_name]=="":
-            		child.children[1].text = base_fields[field_name]
-            	else:
-            		child.children[1].text = ",".join(data_fields[field_name])
+            	child.children[1].text = ",".join(data_fields[field_name])
             else:
                 try:
-                	if data_fields[field_name]=="":
+                	if data_fields[field_name]=="" and field_name in ["departure_time","departure_date","arrival_time","section_commander","action_commander","section","driver","return_date", "finished_action_time", "return_time"]:
                 		child.children[1].text = base_fields[field_name]
                 	else:
                 		child.children[1].text = str(data_fields[field_name])
@@ -137,6 +134,7 @@ class MyFirebase():
         self.reports = self.db.child("Brigades").child(self.localId).child("reports").get().val()
 
     def add_report(self, attributes_list, id=datetime.datetime.now().strftime('%Y-%m-%d_%H:%M')):
+
         data_fields = dict()
         for i, child in enumerate(attributes_list.children):
             field_name = report_fields[-(i+1)]
@@ -155,6 +153,7 @@ class MyFirebase():
                     continue
 
         data_fields['is_completed']=False
+        data_fields['no']=""
         self.db.child("Brigades").child(self.localId).child("reports").child(id).set(data_fields)
         self.reports = self.db.child("Brigades").child(self.localId).child("reports").get().val()
 
