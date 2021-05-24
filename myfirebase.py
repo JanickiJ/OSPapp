@@ -56,12 +56,13 @@ class MyFirebase():
             self.crew_members = self.db.child("Brigades").child(self.localId).child("crew_members").get().val()
             self.account_data = self.db.child("Brigades").child(self.localId).child("account_data").get().val()
             self.reports = self.db.child("Brigades").child(self.localId).child("reports").get().val()
-            #to_remove=[]
-            #for report, items in self.reports.items():
-            	#if items['is_completed']==True:
-            		#to_remove.append(report)
-            #for item in to_remove:
-            	#self.reports.pop(item)
+
+            to_remove=[]
+            for report, items in self.reports.items():
+            	if items['is_completed']==True:
+            		to_remove.append(report)
+            for item in to_remove:
+            	self.reports.pop(item)
         except:
             app.log_in_screen.ids['message'].text = "Nieprawidłowy login lub hasło"
             return False
@@ -167,9 +168,16 @@ class MyFirebase():
         return self.account_data["address"]
 
     def get_active_reports(self):
-        if self.reports:
-            return self.db.child("Brigades").child(self.localId).child("reports").get().val().keys()
-        return []
+    	self.reports = self.db.child("Brigades").child(self.localId).child("reports").get().val()
+    	to_remove=[]
+    	for report, items in self.reports.items():
+    		if items['is_completed']==True:
+    			to_remove.append(report)
+    	for item in to_remove:
+    		self.reports.pop(item)
+    	if self.reports:
+    		return self.reports.keys()
+    	return []
 
     def get_crew_members(self):
         crew_member_list = []
