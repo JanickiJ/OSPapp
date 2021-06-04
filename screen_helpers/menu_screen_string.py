@@ -23,7 +23,7 @@ Screen:
                         size_hint:1,0.07
                         MDTabs:
                             id: tabs
-                            on_tab_switch: app.on_tab_switch(*args)
+                            on_tab_switch: app.menu_screen.on_tab_switch(*args)
                             tab_display_mode: 'text'
                             MDTabsBase:
                                 id: rap_tab
@@ -40,7 +40,7 @@ Screen:
                     
                     MDCard:
                         Carousel:
-                            on_index: app.on_index(*args)
+                            on_index: app.menu_screen.on_index(*args)
                             id: carousel
                             MDFloatLayout:
                                 id: add_report
@@ -55,7 +55,7 @@ Screen:
                                                 id: departure_time
                                                 text: "Czas wyjazdu"
                                                 pos_hint: {'center_x': .55, 'center_y': .5}
-                                                on_release: app.show_time_picker(departure_time)
+                                                on_release: app.menu_screen.show_time_picker(departure_time)
                                                 size_hint: 0.5,None
                                             MDIconButton:
                                                 icon: "trash-can-outline"
@@ -69,7 +69,7 @@ Screen:
                                                 id: departure_date
                                                 text: "Data wyjazdu"
                                                 pos_hint: {'center_x': .55, 'center_y': .5}
-                                                on_release: app.show_date_picker(departure_date)
+                                                on_release: app.menu_screen.show_date_picker(departure_date)
                                                 size_hint: 0.5,None
                                             MDIconButton:
                                                 icon: "trash-can-outline"
@@ -83,7 +83,7 @@ Screen:
                                                 id: arrival_time
                                                 text: "Czas na miejscu"
                                                 pos_hint: {'center_x': .55, 'center_y': .5}
-                                                on_release: app.show_time_picker(arrival_time)
+                                                on_release: app.menu_screen.show_time_picker(arrival_time)
                                                 size_hint: 0.5,None
                                             MDIconButton:
                                                 icon: "trash-can-outline"
@@ -115,14 +115,14 @@ Screen:
                                                 id: section_commander
                                                 text: 'Dowódca sekcji'
                                                 pos_hint: {'center_x': .55, 'center_y': .5}
-                                                on_release: app.show_members_with_permission(section_commander,3)
+                                                on_release: app.menu_screen.show_members_with_permission(section_commander,3)
                                                 size_hint: 0.5,None
                                             MDIconButton:
                                                 icon: "trash-can-outline"
                                                 pos_hint: {'center_x': .85, 'center_y': .5}
                                                 on_release: 
                                                     section_commander.text = "Dowódca sekcji"
-                                                    app.chosen_members.clear()
+                                                    app.menu_screen.chosen_members.clear()
                                         OneLineListItem:
                                             IconLeftWidget:
                                                 icon: "account-cog-outline"
@@ -131,14 +131,14 @@ Screen:
                                                 id: action_commander
                                                 text: 'Dowódca akcji'
                                                 pos_hint: {'center_x': .55, 'center_y': .5}
-                                                on_release: app.show_members_with_permission(action_commander,1)
+                                                on_release: app.menu_screen.show_members_with_permission(action_commander,1)
                                                 size_hint: 0.5,None
                                             MDIconButton:
                                                 icon: "trash-can-outline"
                                                 pos_hint: {'center_x': .85, 'center_y': .5}
                                                 on_release: 
                                                     action_commander.text = "Dowódca akcji"
-                                                    app.chosen_members.clear()                 
+                                                    app.menu_screen.chosen_members.clear()                 
                                         OneLineListItem:
                                             IconLeftWidget:
                                                 icon: "steering"
@@ -147,14 +147,14 @@ Screen:
                                                 id: driver
                                                 text: 'Kierowca'
                                                 pos_hint: {'center_x': .55, 'center_y': .5}
-                                                on_release: app.show_members_with_permission(driver,2)
+                                                on_release: app.menu_screen.show_members_with_permission(driver,2)
                                                 size_hint: 0.5,None
                                             MDIconButton:
                                                 icon: "trash-can-outline"
                                                 pos_hint: {'center_x': .85, 'center_y': .5}
                                                 on_release: 
                                                     driver.text = "Kierowca"
-                                                    app.chosen_members.clear()                    
+                                                    app.menu_screen.chosen_members.clear()                    
                                         OneLineListItem:
                                             IconLeftWidget:
                                                 icon: "account-group-outline"
@@ -163,14 +163,14 @@ Screen:
                                                 id: section
                                                 text: 'Sekcja'
                                                 pos_hint: {'center_x': .55, 'center_y': .5}
-                                                on_release: app.show_members_with_permission(section,0)
+                                                on_release: app.menu_screen.show_members_with_permission(section,0)
                                                 size_hint: 0.5,None
                                             MDIconButton:
                                                 icon: "trash-can-outline"
                                                 pos_hint: {'center_x': .85, 'center_y': .5}
                                                 on_release: 
                                                     section.text = "Sekcja"
-                                                    app.chosen_members.clear()                                                
+                                                    app.menu_screen.chosen_members.clear()                                                
                                         OneLineListItem:
                                             MDTextField:
                                                 id: perpetrator
@@ -207,7 +207,7 @@ Screen:
                                                 id: return_date
                                                 text: "Data powrotu"
                                                 pos_hint: {'center_x': .55, 'center_y': .5}
-                                                on_release: app.show_date_picker(return_date)
+                                                on_release: app.menu_screen.show_date_picker(return_date)
                                                 size_hint: 0.5,None
                                             MDIconButton:
                                                 icon: "trash-can-outline"
@@ -221,7 +221,7 @@ Screen:
                                                 id: finished_action_time
                                                 text: "Godzina zakończenia"
                                                 pos_hint: {'center_x': .55, 'center_y': .5}
-                                                on_release: app.show_time_picker(finished_action_time)
+                                                on_release: app.menu_screen.show_time_picker(finished_action_time)
                                                 size_hint: 0.5,None
                                             MDIconButton:
                                                 icon: "trash-can-outline"
@@ -235,7 +235,7 @@ Screen:
                                                 id: return_time
                                                 text: "Godzina w remizie"
                                                 pos_hint: {'center_x': .55, 'center_y': .5}
-                                                on_release: app.show_time_picker(return_time)
+                                                on_release: app.menu_screen.show_time_picker(return_time)
                                                 size_hint: 0.5,None
                                             MDIconButton:
                                                 icon: "trash-can-outline"
@@ -275,7 +275,7 @@ Screen:
                                     icon: "reload"
                                     md_bg_color: app.theme_cls.primary_color
                                     pos_hint: {'center_x': .93, 'center_y': .2}
-                                    on_release: app.make_second_screen()
+                                    on_release: app.menu_screen.make_second_screen()
                                     
                             MDFloatLayout:
                                 ScrollView:
@@ -333,7 +333,7 @@ Screen:
                             size_hint_y:None
                             text_color:0,0,0,1
                             line_color: 0,0,0,0
-                            on_release:app.show_developers_info()                    
+                            on_release:app.menu_screen.show_developers_info()                    
 """
 
 

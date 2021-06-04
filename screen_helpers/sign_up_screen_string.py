@@ -33,7 +33,7 @@ MDScreen:
                         size_hint_x: 0.8
                         pos_hint: {'center_x':0.5,'center_y':0.2}
                         md_bg_color:1,0,0,1
-                        on_release:app.next()
+                        on_release:app.start_screen.sing_up_next_1()
                 MDFloatLayout:
                     MDTextField:
                         id: address
@@ -56,13 +56,13 @@ MDScreen:
                         size_hint_x: 0.39
                         pos_hint: {'center_x':0.3,'center_y':0.2}
                         md_bg_color:1,0,0,1
-                        on_release:app.previous()
+                        on_release:app.start_screen.sing_up_previous_2()
                     MDRaisedButton:
                         text: "DALEJ"
                         size_hint_x: 0.39
                         pos_hint: {'center_x':0.7,'center_y':0.2}
                         md_bg_color:1,0,0,1
-                        on_release:app.next1()
+                        on_release:app.start_screen.sing_up_next_2()
                 MDFloatLayout:
                     MDTextField:
                         id:password
@@ -93,7 +93,7 @@ MDScreen:
                         size_hint_x: 0.39
                         pos_hint: {'center_x':0.3,'center_y':0.2}
                         md_bg_color:1,0,0,1
-                        on_release:app.previous1()
+                        on_release:app.start_screen.sing_up_previous_2()
                     MDLabel:
                         id:message
                         color:(1,0,0,1)

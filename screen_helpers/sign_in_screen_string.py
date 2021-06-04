@@ -1,11 +1,8 @@
-sing_in_helper = """
+sign_in_helper = """
 MDScreen:
     name:'Login Page'
     on_enter:
-        app.anim(back)
-        app.anim1(back1)
-        app.icons(icon)
-        app.text(label)
+        app.start_screen.log_animation(back, back1, icon, label)
     MDFloatLayout:
         MDFloatLayout:
             id: back
@@ -75,7 +72,7 @@ MDScreen:
             pos_hint:{'center_x':0.5,'center_y':0.2}
             size_hint_x:0.5
             md_bg_color:1,0,0,1
-            on_release:app.sign_in(email_address.text,password.text)
+            on_release:app.start_screen.sign_in(email_address.text,password.text)
         Check:
             id:save_password
             active:True
@@ -97,7 +94,7 @@ MDScreen:
             font_style:'Body2'
             theme_text_color:'Custom'
             text_color:1,0,0,1
-            on_release: app.forgot_password()
+            on_release: app.start_screen.forgot_password()
         MDLabel:
             id:message
             color:(1,0,0,1)

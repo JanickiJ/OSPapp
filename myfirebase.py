@@ -62,13 +62,13 @@ class MyFirebase():
             for item in to_remove:
                 self.reports.pop(item)
         except:
-            app.log_in_screen.ids['message'].text = "Nieprawidłowy login lub hasło"
+            app.app.start_screen.log_in_screen.ids['message'].text = "Nieprawidłowy login lub hasło"
             return False
         return True
 
     def sign_up(self, team_name, email_address, address, phone_number, password, password_repeated):
         if password != password_repeated:
-            self.app.sign_up_screen.ids['message'].text = "Hasła nie są identyczne"
+            self.app.start_screen.sign_up_screen.ids['message'].text = "Hasła nie są identyczne"
             return
         signup_url = "https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=" + self.wak
         signup_payload = {"team_name": team_name, "email": email_address, "address": address, "phone": phone_number,
@@ -77,7 +77,7 @@ class MyFirebase():
         sign_up_data = json.loads(sign_up_request.content.decode())
         if not sign_up_request.ok:
             error_message = sign_up_data["error"]['message']
-            self.app.sign_up_screen.ids['message'].text = error_message
+            self.app.start_screen.sign_up_screen.ids['message'].text = error_message
 
         else:
             refresh_token = sign_up_data['refreshToken']
@@ -93,15 +93,12 @@ class MyFirebase():
             # create new key in database from localid
             my_data = {'account_data': {'email': email_address, 'name': team_name, 'address': address},
                        'crew_members': {}, 'reports': {}}
-            print(my_data)
             data = json.dumps(my_data)
-            print(data)
             post_request = requests.patch(
                 "https://ospapp-705a7-default-rtdb.europe-west1.firebasedatabase.app/Brigades/" + localId + ".json?auth=" + idToken,
                 data=data)
-            print(localId)
             self.auth.send_email_verification(self.app.id_token)
-            self.app.verification_sent(email_address)
+            self.app.start_screen.verification_sent(email_address)
 
     def sign_in(self, email, password):
         return self.authentication(email, password)
@@ -171,10 +168,10 @@ class MyFirebase():
                 content = saved_password_file.read()
                 json_content = json.loads(content)
                 e_mail_saved, password_saved = json_content['email'], json_content['password']
-        self.app.log_in_screen.ids['email_address'].text = e_mail_saved
-        self.app.log_in_screen.ids['password'].text = password_saved
+        self.app.start_screen.log_in_screen.ids['email_address'].text = e_mail_saved
+        self.app.start_screen.log_in_screen.ids['password'].text = password_saved
         open('app_data/refresh_token.txt', 'w').close()
-        self.app.screen_manager.switch_to(self.app.log_in_screen)
+        self.app.change_to_log(None)
 
     def get_name(self):
         return self.account_data["name"]
@@ -202,18 +199,11 @@ class MyFirebase():
         if self.crew_members:
             for member, attributes in self.crew_members.items():
                 crew_member_list.append([str(attributes['name'] + ' ' + str(attributes['last_name']))])
-                if attributes['action_commander']:
-                    crew_member_list[-1].append(True)
-                else:
-                    crew_member_list[-1].append(False)
-                if attributes['driver']:
-                    crew_member_list[-1].append(True)
-                else:
-                    crew_member_list[-1].append(False)
-                if attributes['section_commander']:
-                    crew_member_list[-1].append(True)
-                else:
-                    crew_member_list[-1].append(False)
+                for attribute in ['action_commander', 'driver', 'section_commander']:
+                    if attributes[attribute]:
+                        crew_member_list[-1].append(True)
+                    else:
+                        crew_member_list[-1].append(False)
         return crew_member_list
 
     def get_members_with_permission(self, permission):

@@ -30,5 +30,5 @@ MDScreen:
             font_style:'Body2'
             theme_text_color:'Custom'
             text_color:1,0,0,1
-            on_press: app.change_to_signup()
+            on_press: app.change_to_sign_up()
 """
