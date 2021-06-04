@@ -16,6 +16,7 @@ Screen:
                         title: "OSP"
                         left_action_items: [["menu", lambda x: nav_drawer.set_state('toggle')]]
                         elevation: 20
+                    
                     BoxLayout:
                         id:tabox
                         orientation:'vertical'
@@ -36,6 +37,7 @@ Screen:
                                 id: mem_tab
                                 name: 'members'
                                 text: "Członkowie"
+                    
                     MDCard:
                         Carousel:
                             on_index: app.on_index(*args)
@@ -274,13 +276,11 @@ Screen:
                                     md_bg_color: app.theme_cls.primary_color
                                     pos_hint: {'center_x': .93, 'center_y': .2}
                                     on_release: app.make_second_screen()
-
-
+                                    
                             MDFloatLayout:
                                 ScrollView:
                                     MDList:
                                         id: crew_members                           
-
 
         MDNavigationDrawer:
             id: nav_drawer
@@ -288,22 +288,16 @@ Screen:
                 orientation: 'vertical'
                 padding: "8dp"
                 spacing: "8dp"
-
-
                 AnchorLayout:
                     anchor_x: "left"
                     size_hint_y: None
                     height: navigator_icon.height
-
-
                     MDIcon:
                         id: navigator_icon
                         icon: "fire"
                         font_size: "72sp"                        
                         theme_text_color: "Error"
                         halign: "center"
-
-
                 MDLabel:
                     id: navi_name
                     text: "OSP"
